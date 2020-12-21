@@ -1,23 +1,54 @@
 # project-PIKAIA
 Phyops SDGP group project
 
-## How to add this repo to git in your computer
+## Follow these steps to do your initial commit to the repository
 
-```git remote add origin <ssh-key / https>
-git push -u origin master
+### setting up your git credentials
+type the following commands... I have taken Shehan as an example here
+```
+git config --global user.name "Shehan Saverimuttu"
+git config --global user.email "shehan@example.com"
+
+#type the following to verify if it was successfully added
+git config --list
 ```
 
-i.e if you are using HTTP... use this
+### Doing your first commit {I will follow the simplest way to do things to get everyone started}
+
+1. Go to a folder where you want to have your project in you PC and open the terminal there (mine is desktop). 
+To do that right click on anywhere in your Explorer (file explorer).
+
+and in the context menu you will see something like 'open with bash'. click on it and a bash terminal will open up. If you don't have that option. You probably don't have git installed in your system. (if that's the case download git from here https://git-scm.com/downloads).
+
+2. Type the following command in the terminal. (bash) 
+
+if you have SSH key enabled... (you can enable it anytime--follow this tutorial later https://www.youtube.com/watch?v=WgZIv5HI44o)
 ```
-git remote add origin https://github.com/thoshithaKaduru/project-PIKAIA.git
+git clone git@github.com:thoshithaKaduru/project-PIKAIA.git
+```
+if you don't (you will have to enter your username and password each time)
+```
+git clone https://github.com/thoshithaKaduru/project-PIKAIA.git
+```
+3. then go into the folder that gets created (type this in terminal `cd project-PIKAIA`)
+
+4. Go to the folder named 'project initiation'(type `cd project-initiation`) and Create a text file with your name (ex: shehan.txt) and add somethings to the text file. 
+```
+# type the following in terminal to create a file. 
+touch shehan.txt
 ```
 
----
+5. Save the file then in terminal, Type `git add .` to add the text file to the staging area
 
-But I recommend setting up an SSH key to your computer so you don't have to enter your credentials for each commit
-refer to this link to set up you SSH (for windows) https://www.youtube.com/watch?v=WgZIv5HI44o
+6. Type `commit -m "Shehan's first commit"`
 
-# Here is a quick the workflow we'll follow through for this project. This is something I've used before... so I'll have a little demo for you guys
+7. Then type `git push origin main`
+
+
+#### I recommend setting up an SSH key to your computer so you don't have to enter your credentials for each commit. Refer to this link to set up you SSH (for windows) https://www.youtube.com/watch?v=WgZIv5HI44o
+
+# Disregard the next section.{so don't use any of the commands there} We won't be using forks... so I'll have to change a few things..
+### Here is a quick the workflow we'll follow through for this project. This is something I've used before... so I'll have a little demo for you guys
 
 Whether you're trying to give back to the open source community or collaborating on your own projects, knowing how to properly fork and generate pull requests is essential. Unfortunately, it's quite easy to make mistakes or not know what you should do when you're initially learning the process. I know that I certainly had considerable initial trouble with it, and I found a lot of the information on GitHub and around the internet to be rather piecemeal and incomplete - part of the process described here, another there, common hangups in a different place, and so on.
 

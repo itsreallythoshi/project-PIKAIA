@@ -3,11 +3,11 @@ Phyops SDGP group project
 
 ## How to add this repo to git in your computer
 
-`git remote add origin <ssh-key / https>
-git push -u origin master`
+```git remote add origin <ssh-key / https>
+git push -u origin master```
 
 i.e if you are using HTTP... use this
-`git remote add origin https://github.com/thoshithaKaduru/project-PIKAIA.git`
+```git remote add origin https://github.com/thoshithaKaduru/project-PIKAIA.git```
 
 ---
 

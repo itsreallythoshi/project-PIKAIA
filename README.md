@@ -40,12 +40,17 @@ touch shehan.txt
 
 5. Save the file then in terminal, Type `git add .` to add the text file to the staging area
 
-6. Type `commit -m "Shehan's first commit"`
+6. Type `git commit -m "Shehan's first commit"`
 
 7. Then type `git push origin main`
 
 
 #### I recommend setting up an SSH key to your computer so you don't have to enter your credentials for each commit. Refer to this link to set up you SSH (for windows) https://www.youtube.com/watch?v=WgZIv5HI44o
+
+---
+---
+---
+---
 
 # Disregard the next section.{so don't use any of the commands there} We won't be using forks... so I'll have to change a few things..
 ### Here is a quick the workflow we'll follow through for this project. This is something I've used before... so I'll have a little demo for you guys

@@ -1,6 +1,14 @@
 # project-PIKAIA
 Phyops SDGP group project
 
+links for ML demonstration
+
+emotion analysis: https://colab.research.google.com/drive/1Aw7PsLWqKct8OEZi1IDG2eoXQcoHIG80#scrollTo=sRvjve-Mg-PL
+
+music recommender: https://colab.research.google.com/drive/12yDXZycBFAO7cvHN-UFHWmhomzNJ9atV
+
+chatbot: https://colab.research.google.com/drive/1aMWdZRtZ0erws4oXOUdPzvliPrE8PZV8?authuser=2
+
 ## Follow these steps to do your initial commit to the repository
 
 ### setting up your git credentials

@@ -1,0 +1,51 @@
+.nav {
+  width: 100%;
+  height: 8vh;
+  display: flex;
+  background-color: #201f2224;
+  backdrop-filter: blur(100px);
+  border-radius: 5rem;
+  border: 0.1rem solid #ffffff33;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.nav__logo {
+  margin-left: 2rem;
+  width: 12rem;
+}
+.nav__login {
+  width: 20rem;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-right: 2rem;
+}
+.nav__avatar {
+  width: 13rem;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.nav__controls {
+  width: 25rem;
+}
+.nav__controls > ul {
+  justify-content: space-around;
+  display: flex;
+}
+
+.nav__controls > ul > li {
+  list-style-type: none;
+}
+.nav__controls > ul > li > a {
+  color: white;
+  text-decoration: none;
+}
+
+.nav__login > Button {
+  color: white;
+  width: 1%;
+  height: 4rem;
+  border-radius: 50%;
+}

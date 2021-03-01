@@ -1,0 +1,49 @@
+/* Assigning the grid classess */
+.dashboard__timer {
+  grid-area: timer;
+}
+.dashboard__moodTracker {
+  grid-area: moodTracker;
+}
+.dashboard__state {
+  grid-area: state;
+}
+.dashboard__chatBot {
+  grid-area: chatbot;
+}
+.dashboard__musicPlayer {
+  grid-area: player;
+}
+.dashboard__suggessions {
+  grid-area: suggessions;
+}
+
+.dashboard {
+  width: 100%;
+  position: relative;
+  height: 70vh;
+  background-color: #201f2224;
+  backdrop-filter: blur(100px);
+  border-radius: 4rem;
+  border: 0.1rem solid #ffffff33;
+}
+.dashboard__container {
+  width: 90%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 90%;
+
+  display: grid;
+  grid-template-areas:
+    "timer state state  player "
+    "timer chatbot chatbot suggessions"
+    "moodTracker chatbot chatbot suggessions";
+  grid-gap: 10px;
+  background-color: #252a2e27;
+  padding: 10px;
+}
+.dashboard__container > div {
+  background-color: rgba(120, 134, 214, 0.158);
+}

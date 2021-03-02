@@ -1,0 +1,30 @@
+========================================================================================
+https://stackoverflow.com/questions/33198428/jwt-module-object-has-no-attribute-encode
+jwt error when using the encode method
+========================================================================================
+
+========================= youtube comment by Rafael Gramoschi ==========================
+UPDATE ON CODE using Python3 & PyJWT:
+for encoding use
+
+token = jwt.encode({'public_id': user.public_id,'exp': datetime.datetime.utcnow()+datetime.timedelta(minutes=30)},app.config['SECRET_KEY'],algorithm="HS256")
+
+for decoding use
+
+data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
+
+basically just adding the ALGORITHM and ALGORITHMS=[] parts... otherwise it gave me error (token invalid for operations after the log-in), but this fixed it.
+
+check you don't have both jwt and PyJWT packages:
+pip3 list
+
+if you have both:
+pip3 uninstall jwt
+pip3 uninstall PyJWT
+pip3 install PyJWT
+
+re-run your app
+
+I Hope this helps!
+========================================================================================
+

@@ -5,7 +5,11 @@ from functools import wraps
 import uuid
 import jwt
 import datetime
+import requests
 
+# we import requests to make HTTP requests to the Brain Shop API
+# library installs and important pre-requisites
+# $ pip install requests
 # datetime to create an expiration for jwt
 # jwt for generating json web token -
 # we are using PyJWT not JWT... so $ pip uninstall JWT $ pip install PyJWT - Question:33198428
@@ -28,6 +32,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///todo.db'
 db = SQLAlchemy(app)
 
 
+# TODO: there is a duplicate column in User class. Remove it later
 # class for user table
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -37,6 +42,7 @@ class User(db.Model):
     password = db.Column(db.String(80))
     admin = db.Column(db.Boolean)
 
+
 # we don't need a public id for each to-do. we can add if we want
 # we can also add a foreign key for to-do if we want
 
@@ -45,6 +51,20 @@ class Todo(db.Model):
     text = db.Column(db.String(50))
     complete = db.Column(db.Boolean)
     user_id = db.Column(db.Integer)
+
+
+# we need a public key for each chat conversation
+# TODO: add foreign key
+class Chat(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    public_id = db.Column(db.String(50), unique=True)
+    user_sentence = db.Column(db.String(200))
+    chatbot_sentence = db.Column(db.String(200))
+    user_id = db.Column(db.Integer)
+
+
+class Emotion(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
 
 
 # ============== decorator for header
@@ -238,7 +258,7 @@ def login():
         # app.config['SECRET_KEY'] will be used to encode the token
         # token = jwt.encode( {'public_id': user.public_id, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)},app.config['SECRET_KEY'])
         token = jwt.encode(
-            {'public_id': user.public_id, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)},
+            {'public_id': user.public_id, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=300)},
             app.config['SECRET_KEY'], algorithm="HS256")
         # to decode jwt token  # decode token data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
         # not-working:   # return jsonify({'token': token.decode('UTF-8')})
@@ -326,6 +346,126 @@ def delete_todo(current_user, todo_id):
     # a commit will save the change in the database
     db.session.commit()
     return jsonify({'message': 'Todo item deleted!'})
+
+
+# ============================= Normal User CHAT ROUTES =============================
+# TODO: add validation and error handling code
+# json request body structure
+# { 'userInput' : 'hi, How's the weather today?' }
+@app.route('/chat', methods=['POST'])
+@token_required
+def create_chat_conversation(current_user):
+    # admin users cannot have chats
+    if current_user.admin:
+        return jsonify({'message': 'Admin users cannot create chat conversations!'})
+
+    client_data = request.get_json()
+
+    brain_shop_payload = {
+        'bid': '155151',
+        'key': 'tKJeOa4WLS84Eyee',
+        'uid': current_user.id,
+        'msg': client_data['userInput']
+    }
+    brain_shop_endpoint = 'http://api.brainshop.ai/get?'
+
+    try:
+        # GET request to brain API
+        chatbot_request = requests.get(brain_shop_endpoint, params=brain_shop_payload)
+        brain_data = chatbot_request.json()
+        chatbot_sentence = brain_data['cnt']
+
+    except:
+        return jsonify({'error': 'Brainshop service unavailable'}), 503
+
+    # Saving data
+    new_conversation = Chat(public_id=str(uuid.uuid4()), user_sentence=client_data['userInput'],
+                            chatbot_sentence=chatbot_sentence, user_id=current_user.id)
+    db.session.add(new_conversation)
+    db.session.commit()
+
+    return jsonify({'chatbotResponse': chatbot_sentence, 'userInputEmotion': 'it\'s not implemented yet'})
+
+
+@app.route('/chat', methods=['GET'])
+@token_required
+def get_all_chat_conversations(current_user):
+    # admin users cannot have chats
+    if current_user.admin:
+        return jsonify({'message': 'Admin users cannot read user chat conversations!'})
+
+    conversations = Chat.query.filter_by(user_id=current_user.id).all()
+
+    # an array to hold all the dictionaries
+    output = []
+    # inserting each to-do into it's own dictionary
+    for conversation in conversations:
+        conversation_data = {'public_id': conversation.public_id, 'user_sentence': conversation.user_sentence,
+                             'chatbot_sentence': conversation.chatbot_sentence}
+        output.append(conversation_data)
+    return jsonify({'conversations': output})
+
+
+@app.route('/chat/<user_public_id>', methods=['DELETE'])
+@token_required
+def admin_delete_user_chat_conversations(current_user, user_public_id):
+    # normal users cannot delete other user's chats
+    if not current_user.admin:
+        return jsonify({'message': 'This delete route is not for Admin users user route /chat/[user_id]'})
+
+    user = User.query.filter_by(public_id=user_public_id).first()
+    if not user:
+        return jsonify({'message': 'no such user'})
+
+    userId = user.id
+
+    deleted = 0
+    while True:
+        conversation = Chat.query.filter_by(user_id=userId).first()
+        # no conversation in iteration
+        if not conversation:
+            break
+
+        db.session.delete(conversation)
+        deleted += 1
+
+    if deleted == 0:
+        return jsonify({'message': 'No conversations of user {} deleted!'.format(user_public_id)})
+
+    db.session.commit()
+    return jsonify({'message': 'chat data of user {} successfully deleted'.format(user_public_id)})
+
+
+@app.route('/chat', methods=['DELETE'])
+@token_required
+def user_delete_all_chat_conversations(current_user):
+    # admin users cannot use this route
+    if current_user.admin:
+        return jsonify({'message': 'This delete route is not for Admin users user route /chat/[user_id]'})
+
+    deleted = 0
+    while True:
+        conversation = Chat.query.filter_by(user_id=current_user.id).first()
+        # no conversation in iteration
+        if not conversation:
+            break
+
+        db.session.delete(conversation)
+        deleted += 1
+
+    if deleted == 0:
+        return jsonify({'message': 'No conversations to delete!'})
+
+    db.session.commit()
+    return jsonify({'message': 'all conversations successfully deleted'})
+
+
+# ========================== emotion endpoint ============================================
+@app.route('/emotion', methods=['GET'])
+@token_required
+def get_emotion(current_user):
+    # TODO: add proper implementation to this route
+    return ''
 
 
 if __name__ == '__main__':

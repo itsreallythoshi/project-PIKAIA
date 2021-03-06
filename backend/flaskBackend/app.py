@@ -1,11 +1,17 @@
 from flask import Flask, request, jsonify, make_response
 from flask_sqlalchemy import SQLAlchemy
+from keras.models import load_model
+from tensorflow.python.keras.models import load_model
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
+from emotion_analysis import preProcessEmotionModel
+
 import uuid
 import jwt
 import datetime
 import requests
+import pandas as pd
+import numpy as np
 
 # we import requests to make HTTP requests to the Brain Shop API
 # library installs and important pre-requisites
@@ -96,6 +102,20 @@ def token_required(f):
 
     # return the decorated function
     return decorated
+
+
+def getEmotionModel():
+    global loaded_model_v2
+    loaded_model_v2 = load_model('ml_models/bi_gru_w2vec_v2_30eps.h5')
+    print("Loaded Model")
+
+
+def readEmotionDataSets():
+    global data_train
+    global data_test
+    data_train = pd.read_csv('data/data_train.csv', encoding='utf-8')
+    data_test = pd.read_csv('data/data_test.csv', encoding='utf-8')
+    print("Reading Emotion datasets")
 
 
 # ============== create database using python shell ==============
@@ -461,12 +481,19 @@ def user_delete_all_chat_conversations(current_user):
 
 
 # ========================== emotion endpoint ============================================
-@app.route('/emotion', methods=['GET'])
+@app.route('/emotion', methods=['POST'])
 @token_required
 def get_emotion(current_user):
-    # TODO: add proper implementation to this route
-    return ''
+    if current_user.admin:
+        return jsonify({'message': 'This delete route is not for Admin users user route /chat/[user_id]'})
+    class_names = ['joy', 'fear', 'anger', 'sadness', 'neutral']
 
+    # Requesting and Encoding jason data
+    emotion = request.get_json(force=True)
+
+    #Encoding json
+    encodedRequest = (emotion['message'])
+    return jsonify({'emotion': (class_names[np.argmax(preProcessEmotionModel([encodedRequest]))])})
 
 if __name__ == '__main__':
     app.run(debug=True)

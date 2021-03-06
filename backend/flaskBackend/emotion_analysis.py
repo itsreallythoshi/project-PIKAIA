@@ -36,7 +36,6 @@ getEmotionModel()
 
 def preProcessEmotionModel(encodedJson):
     max_seq_len = 500
-    class_names = ['joy', 'fear', 'anger', 'sadness', 'neutral']
 
     X_train = data_train.Text
     X_test = data_test.Text

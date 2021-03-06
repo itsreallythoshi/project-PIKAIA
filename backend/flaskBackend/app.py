@@ -1,7 +1,5 @@
 from flask import Flask, request, jsonify, make_response
 from flask_sqlalchemy import SQLAlchemy
-from keras.models import load_model
-from tensorflow.python.keras.models import load_model
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
 from emotion_analysis import preProcessEmotionModel
@@ -72,6 +70,10 @@ class Emotion(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
 
+# class Name on Emotions
+class_names = ['joy', 'fear', 'anger', 'sadness', 'neutral']
+
+
 # ============== decorator for header
 # token_required takes in the function that gets decorated
 # the inner decorated function gets passed in the positional arguments and the keyword arguments
@@ -101,6 +103,7 @@ def token_required(f):
 
     # return the decorated function
     return decorated
+
 
 # ============== create database using python shell ==============
 # go to shell and type $ python
@@ -363,7 +366,9 @@ def create_chat_conversation(current_user):
     if current_user.admin:
         return jsonify({'message': 'Admin users cannot create chat conversations!'})
 
-    client_data = request.get_json()
+    client_data = request.get_json(force=True)
+    # Encoding json
+    encodedRequest = ([client_data['userInput']])
 
     brain_shop_payload = {
         'bid': '155151',
@@ -388,7 +393,10 @@ def create_chat_conversation(current_user):
     db.session.add(new_conversation)
     db.session.commit()
 
-    return jsonify({'chatbotResponse': chatbot_sentence, 'userInputEmotion': 'it\'s not implemented yet'})
+    return jsonify(
+        {'chatBotResponse': chatbot_sentence,
+         'userInputEmotion': (class_names[np.argmax(preProcessEmotionModel(encodedRequest))])
+         })
 
 
 @app.route('/chat', methods=['GET'])
@@ -470,7 +478,6 @@ def user_delete_all_chat_conversations(current_user):
 def get_emotion(current_user):
     if current_user.admin:
         return jsonify({'message': 'This delete route is not for Admin users user route /chat/[user_id]'})
-    class_names = ['joy', 'fear', 'anger', 'sadness', 'neutral']
 
     # Requesting and Encoding jason data
     emotion = request.get_json(force=True)

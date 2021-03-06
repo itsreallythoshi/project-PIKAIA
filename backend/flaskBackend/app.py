@@ -10,7 +10,6 @@ import uuid
 import jwt
 import datetime
 import requests
-import pandas as pd
 import numpy as np
 
 # we import requests to make HTTP requests to the Brain Shop API
@@ -102,21 +101,6 @@ def token_required(f):
 
     # return the decorated function
     return decorated
-
-
-def getEmotionModel():
-    global loaded_model_v2
-    loaded_model_v2 = load_model('ml_models/bi_gru_w2vec_v2_30eps.h5')
-    print("Loaded Model")
-
-
-def readEmotionDataSets():
-    global data_train
-    global data_test
-    data_train = pd.read_csv('data/data_train.csv', encoding='utf-8')
-    data_test = pd.read_csv('data/data_test.csv', encoding='utf-8')
-    print("Reading Emotion datasets")
-
 
 # ============== create database using python shell ==============
 # go to shell and type $ python
@@ -491,9 +475,10 @@ def get_emotion(current_user):
     # Requesting and Encoding jason data
     emotion = request.get_json(force=True)
 
-    #Encoding json
-    encodedRequest = (emotion['message'])
-    return jsonify({'emotion': (class_names[np.argmax(preProcessEmotionModel([encodedRequest]))])})
+    # Encoding json
+    encodedRequest = ([emotion['message']])
+    return jsonify({'emotion': (class_names[np.argmax(preProcessEmotionModel(encodedRequest))])}), 200
+
 
 if __name__ == '__main__':
     app.run(debug=True)

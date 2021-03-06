@@ -13,12 +13,14 @@ from keras.preprocessing.sequence import pad_sequences
 from keras.utils import to_categorical
 
 
+# Loading the emotion model
 def getEmotionModel():
     global loaded_model_v2
     loaded_model_v2 = load_model('ml_models/bi_gru_w2vec_v2_30eps.h5')
     print("Loaded Model")
 
 
+# Reading the datasets
 def readEmotionDataSets():
     global data_train
     global data_test

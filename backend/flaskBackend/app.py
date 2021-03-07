@@ -34,13 +34,10 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///todo.db'
 # instantiate SQLAlchemy
 db = SQLAlchemy(app)
 
-
-# TODO: there is a duplicate column in User class. Remove it later
 # class for user table
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     public_id = db.Column(db.String(50), unique=True)
-    name = db.Column(db.String(50))
     name = db.Column(db.String(50))
     password = db.Column(db.String(80))
     admin = db.Column(db.Boolean)
@@ -63,12 +60,16 @@ class Chat(db.Model):
     public_id = db.Column(db.String(50), unique=True)
     user_sentence = db.Column(db.String(200))
     chatbot_sentence = db.Column(db.String(200))
+    user_emotion = db.Column(db.String(10))
     user_id = db.Column(db.Integer)
 
 
 class Emotion(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    public_id = db.Column(db.String(50), unique=True)
+    user_input = db.Column(db.String(200))
     user_emotion = db.Column(db.String(10))
+    user_id = db.Column(db.Integer)
 
 
 # class Name on Emotions
@@ -386,7 +387,7 @@ def create_chat_conversation(current_user):
 
     # Saving data
     new_conversation = Chat(public_id=str(uuid.uuid4()), user_sentence=client_data['userInput'],
-                            chatbot_sentence=chatbot_sentence, user_id=current_user.id)
+                            chatbot_sentence=chatbot_sentence, user_id=current_user.id, user_emotion=user_emotion)
     db.session.add(new_conversation)
     db.session.commit()
 
@@ -471,6 +472,25 @@ def user_delete_all_chat_conversations(current_user):
 
 
 # ========================== emotion endpoint ============================================
+@app.route('/emotions', methods=['GET'])
+@token_required
+def get_all_chat_emotions(current_user):
+    # admin users cannot have chats
+    if current_user.admin:
+        return jsonify({'message': 'Admin users cannot read user chat conversations!'})
+
+    emotions = Emotion.query.filter_by(user_id=current_user.id).all()
+
+    # an array to hold all the dictionaries
+    output = []
+    # inserting each to-do into it's own dictionary
+    for emotion in emotions:
+        emotion_data = {'id': emotion.id, 'public_id': emotion.public_id, 'user_Input': emotion.user_input,
+                        'user_emotion': emotion.user_emotion}
+        output.append(emotion_data)
+    return jsonify({'emotions': output})
+
+
 @app.route('/emotion', methods=['POST'])
 @token_required
 def get_emotion(current_user):
@@ -481,9 +501,15 @@ def get_emotion(current_user):
     client_request = request.get_json(force=True)
 
     # Encoding json
-    encodedRequest = ([client_request['message']])
+    encodedRequest = ([client_request['userInput']])
 
     user_emotion = (class_names[np.argmax(preProcessEmotionModel(encodedRequest))])
+
+    # Saving data
+    new_emotion = Emotion(public_id=str(uuid.uuid4()), user_input=client_request['userInput'],
+                          user_emotion=user_emotion, user_id=current_user.id)
+    db.session.add(new_emotion)
+    db.session.commit()
 
     return jsonify({'userInputEmotion': user_emotion}), 200
 

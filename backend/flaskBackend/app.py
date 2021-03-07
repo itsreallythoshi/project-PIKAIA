@@ -68,6 +68,7 @@ class Chat(db.Model):
 
 class Emotion(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    user_emotion = db.Column(db.String(10))
 
 
 # class Name on Emotions
@@ -259,11 +260,11 @@ def login():
     # check for password
     # password matches
     if check_password_hash(user.password, auth.password):
-        # an expiration is a unix utc timestamp in python
-        # we can add a time delta to utc now. now the token is active for only 30 minutes
-        # todo: let the user the option to stay signed in for a few days... and change the time delta
-        # app.config['SECRET_KEY'] will be used to encode the token
-        # token = jwt.encode( {'public_id': user.public_id, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)},app.config['SECRET_KEY'])
+        # an expiration is a unix utc timestamp in python we can add a time delta to utc now. now the token is active
+        # for only 30 minutes todo: let the user the option to stay signed in for a few days... and change the time
+        #  delta app.config['SECRET_KEY'] will be used to encode the token token = jwt.encode( {'public_id':
+        #  user.public_id, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)},app.config[
+        #  'SECRET_KEY'])
         token = jwt.encode(
             {'public_id': user.public_id, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=300)},
             app.config['SECRET_KEY'], algorithm="HS256")
@@ -287,10 +288,7 @@ def get_all_todos(current_user):
     output = []
     # inserting each to-do into it's own dictionary
     for todo in todos:
-        todo_data = {}
-        todo_data['id'] = todo.id
-        todo_data['text'] = todo.text
-        todo_data['complete'] = todo.complete
+        todo_data = {'id': todo.id, 'text': todo.text, 'complete': todo.complete}
         output.append(todo_data)
 
     return jsonify({'todos': output})
@@ -307,10 +305,7 @@ def get_one_todo(current_user, todo_id):
         return jsonify({'message': 'No todo found!'})
 
     # to-do was found
-    todo_data = {}
-    todo_data['id'] = todo.id
-    todo_data['text'] = todo.text
-    todo_data['complete'] = todo.complete
+    todo_data = {'id': todo.id, 'text': todo.text, 'complete': todo.complete}
     return jsonify(todo_data)
 
 
@@ -370,6 +365,8 @@ def create_chat_conversation(current_user):
     # Encoding json
     encodedRequest = ([client_data['userInput']])
 
+    user_emotion = (class_names[np.argmax(preProcessEmotionModel(encodedRequest))])
+
     brain_shop_payload = {
         'bid': '155151',
         'key': 'tKJeOa4WLS84Eyee',
@@ -395,7 +392,7 @@ def create_chat_conversation(current_user):
 
     return jsonify(
         {'chatBotResponse': chatbot_sentence,
-         'userInputEmotion': (class_names[np.argmax(preProcessEmotionModel(encodedRequest))])
+         'userInputEmotion': user_emotion
          })
 
 
@@ -413,7 +410,8 @@ def get_all_chat_conversations(current_user):
     # inserting each to-do into it's own dictionary
     for conversation in conversations:
         conversation_data = {'public_id': conversation.public_id, 'user_sentence': conversation.user_sentence,
-                             'chatbot_sentence': conversation.chatbot_sentence}
+                             'chatbot_sentence': conversation.chatbot_sentence,
+                             'user_emotion': conversation.user_emotion}
         output.append(conversation_data)
     return jsonify({'conversations': output})
 
@@ -480,11 +478,14 @@ def get_emotion(current_user):
         return jsonify({'message': 'This delete route is not for Admin users user route /chat/[user_id]'})
 
     # Requesting and Encoding jason data
-    emotion = request.get_json(force=True)
+    client_request = request.get_json(force=True)
 
     # Encoding json
-    encodedRequest = ([emotion['message']])
-    return jsonify({'emotion': (class_names[np.argmax(preProcessEmotionModel(encodedRequest))])}), 200
+    encodedRequest = ([client_request['message']])
+
+    user_emotion = (class_names[np.argmax(preProcessEmotionModel(encodedRequest))])
+
+    return jsonify({'userInputEmotion': user_emotion}), 200
 
 
 if __name__ == '__main__':

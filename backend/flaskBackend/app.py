@@ -10,6 +10,14 @@ import datetime
 import requests
 import numpy as np
 
+
+# RUN REQUIREMENT.TXT FILE TO INSTALL DEPENDENCIES
+# cd to the directory where requirements.txt is located.
+# activate your virtualenv.
+# run: pip install -r requirements.txt in your shell.
+
+
+
 # we import requests to make HTTP requests to the Brain Shop API
 # library installs and important pre-requisites
 # $ pip install requests

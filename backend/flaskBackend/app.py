@@ -34,6 +34,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///todo.db'
 # instantiate SQLAlchemy
 db = SQLAlchemy(app)
 
+
 # class for user table
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -493,7 +494,7 @@ def get_all_chat_emotions(current_user):
 
 @app.route('/emotion', methods=['POST'])
 @token_required
-def get_emotion(current_user):
+def user_get_emotion(current_user):
     if current_user.admin:
         return jsonify({'message': 'This delete route is not for Admin users user route /chat/[user_id]'})
 
@@ -512,6 +513,55 @@ def get_emotion(current_user):
     db.session.commit()
 
     return jsonify({'userInputEmotion': user_emotion}), 200
+
+
+@app.route('/emotions', methods=['DELETE'])
+@token_required
+def user_delete_all_emotions(current_user):
+    # admin users cannot use this route
+    if current_user.admin:
+        return jsonify({'message': 'This delete route is not for Admin users user route /chat/[user_id]'})
+
+    deleted = 0
+    while True:
+        emotion_query = Emotion.query.filter_by(user_id=current_user.id).first()
+        # no emotion in iteration
+        if not emotion_query:
+            break
+
+        db.session.delete(emotion_query)
+        deleted += 1
+
+    if deleted == 0:
+        return jsonify({'message': 'No emotions to delete!'})
+
+    db.session.commit()
+    return jsonify({'message': 'all emotions were successfully deleted'})
+
+
+# ========================== quotes endpoint ============================================
+@app.route('/quotes', methods=['GET'])
+@token_required
+def user_get_quote(current_user):
+    # admin users cannot have chats
+    if current_user.admin:
+        return jsonify({'message': 'Admin users cannot use quotes!'})
+
+    quotes_endpoint = 'https://quotes.rest/qod?category=inspire'
+    api_token = "25632gadhgahs6276712"
+    headers = {'content-type': 'application/json',
+               'X-TheySaidSo-Api-Secret': format(api_token)}
+
+    try:
+        # GET request to quotes API
+        response = requests.get(quotes_endpoint, headers=headers)
+    except:
+        return jsonify({'error': 'Quote service unavailable'}), 503
+
+    quote = response.json()['contents']['quotes'][0]['quote']
+    author = response.json()['contents']['quotes'][0]['author']
+
+    return jsonify({'quotes': quote, 'author': author})
 
 
 if __name__ == '__main__':

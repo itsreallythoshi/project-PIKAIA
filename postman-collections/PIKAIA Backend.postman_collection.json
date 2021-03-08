@@ -1,0 +1,339 @@
+{
+	"info": {
+		"_postman_id": "5ff7cf6d-b210-4395-a246-922cad23fe1c",
+		"name": "PIKAIA Backend",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create Chat Conversation",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOiI0ODNmZTAwMy1mZWE0LTQ3YTAtYjg0MC04ZDc1Nzc0YjY3ZGIiLCJleHAiOjE2MTUxMDQzMzZ9.uOdmhizOHLbBA_rbaZ_Z0A23w5KGIOgelc9tPL7L6C4",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userInput\": \"Hi I'm happy today\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/chat",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"chat"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login Admin",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:5000/admin",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"admin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login User",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "12345",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "Thoshitha",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOiI0ODNmZTAwMy1mZWE0LTQ3YTAtYjg0MC04ZDc1Nzc0YjY3ZGIiLCJleHAiOjE2MTUxMDQzMzZ9.uOdmhizOHLbBA_rbaZ_Z0A23w5KGIOgelc9tPL7L6C4",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:5000/user",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "(Vendor) Brain Shop Get Request",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User - Get all Chat Conversations",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Admin - Delete all Chat Conversations",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User - Delete all Chat Conversations",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOiI0ODNmZTAwMy1mZWE0LTQ3YTAtYjg0MC04ZDc1Nzc0YjY3ZGIiLCJleHAiOjE2MTQ5OTk1OTd9.LicnW6l-I_kdEh5Ao-vWdDhgFfm0sYTN_-zbs0TG4lc",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:5000/chat",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"chat"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Admin - Get all users",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOiI0ODNmZTAwMy1mZWE0LTQ3YTAtYjg0MC04ZDc1Nzc0YjY3ZGIiLCJleHAiOjE2MTUxMTk0Mjl9.pOSlenqCcJL9s7xOYImwMv9r0SjBp53FmIT_D8UYp6c",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:5000/user",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Emotion",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "12345",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "Thoshitha",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOiI0ODNmZTAwMy1mZWE0LTQ3YTAtYjg0MC04ZDc1Nzc0YjY3ZGIiLCJleHAiOjE2MTUxMDQzMzZ9.uOdmhizOHLbBA_rbaZ_Z0A23w5KGIOgelc9tPL7L6C4",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userInput\" : \"Happy\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/emotion",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"emotion"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Emotion",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOiI0ODNmZTAwMy1mZWE0LTQ3YTAtYjg0MC04ZDc1Nzc0YjY3ZGIiLCJleHAiOjE2MTUxOTM0MzZ9.mJeWvgHJSAYNQ0XRLTNNlgD3jpHzc1dMO8-5jiwVflo",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:5000/emotions",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"emotions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User - Get All Emotions",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOiI0ODNmZTAwMy1mZWE0LTQ3YTAtYjg0MC04ZDc1Nzc0YjY3ZGIiLCJleHAiOjE2MTUxOTM0MzZ9.mJeWvgHJSAYNQ0XRLTNNlgD3jpHzc1dMO8-5jiwVflo",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:5000/emotions",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"emotions"
+					],
+					"query": [
+						{
+							"key": "x-access-token",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Quotes",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOiI0ODNmZTAwMy1mZWE0LTQ3YTAtYjg0MC04ZDc1Nzc0YjY3ZGIiLCJleHAiOjE2MTUxOTM0MzZ9.mJeWvgHJSAYNQ0XRLTNNlgD3jpHzc1dMO8-5jiwVflo",
+						"type": "text"
+					}
+				],
+				"url": null
+			},
+			"response": []
+		}
+	]
+}

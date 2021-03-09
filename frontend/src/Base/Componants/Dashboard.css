@@ -14,9 +14,7 @@
 .dashboard__musicPlayer {
   grid-area: player;
 }
-.dashboard__suggessions {
-  grid-area: suggessions;
-}
+
 
 .dashboard {
   width: 100%;
@@ -38,8 +36,8 @@
   display: grid;
   grid-template-areas:
     "timer state state  player "
-    "timer chatbot chatbot suggessions"
-    "moodTracker chatbot chatbot suggessions";
+    "timer chatbot chatbot player"
+    "moodTracker chatbot chatbot player";
   grid-gap: 10px;
   background-color: #252a2e27;
   padding: 10px;

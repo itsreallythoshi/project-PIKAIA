@@ -1,27 +1,24 @@
 {
 	"info": {
-		"_postman_id": "5ff7cf6d-b210-4395-a246-922cad23fe1c",
-		"name": "PIKAIA Backend",
+		"_postman_id": "d0ee00e5-cd22-4778-858c-7d52097166c7",
+		"name": "PIKAIA Backend Endpoints",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "Create Chat Conversation",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": [
 					{
 						"key": "x-access-token",
-						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOiI0ODNmZTAwMy1mZWE0LTQ3YTAtYjg0MC04ZDc1Nzc0YjY3ZGIiLCJleHAiOjE2MTUxMDQzMzZ9.uOdmhizOHLbBA_rbaZ_Z0A23w5KGIOgelc9tPL7L6C4",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOiI0ODNmZTAwMy1mZWE0LTQ3YTAtYjg0MC04ZDc1Nzc0YjY3ZGIiLCJleHAiOjE2MTUyODM2NTR9.3hiR3Vqw74WlwH34hx2pAEyuH0swW-d-saZSRELCR08",
 						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"userInput\": \"Hi I'm happy today\"\r\n}",
+					"raw": "{\r\n    \"userInput\": \"hi, I'm feeling sad\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -48,6 +45,21 @@
 		{
 			"name": "Login Admin",
 			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "Admin",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "12345",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [
 					{
@@ -57,7 +69,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://127.0.0.1:5000/admin",
+					"raw": "http://127.0.0.1:5000/login",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -67,7 +79,7 @@
 					],
 					"port": "5000",
 					"path": [
-						"admin"
+						"login"
 					]
 				}
 			},
@@ -95,12 +107,12 @@
 				"header": [
 					{
 						"key": "x-access-token",
-						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOiI0ODNmZTAwMy1mZWE0LTQ3YTAtYjg0MC04ZDc1Nzc0YjY3ZGIiLCJleHAiOjE2MTUxMDQzMzZ9.uOdmhizOHLbBA_rbaZ_Z0A23w5KGIOgelc9tPL7L6C4",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOiI0ODNmZTAwMy1mZWE0LTQ3YTAtYjg0MC04ZDc1Nzc0YjY3ZGIiLCJleHAiOjE2MTUyMzQyODR9.Q5a5ohEOn4MX6kRECozPQLT4_iCbHHvwZyZyWsWIFmY",
 						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "http://127.0.0.1:5000/user",
+					"raw": "http://127.0.0.1:5000/login",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -110,19 +122,53 @@
 					],
 					"port": "5000",
 					"path": [
-						"user"
+						"login"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "(Vendor) Brain Shop Get Request",
+			"name": "Not working",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
 				"method": "GET",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "// name (Vendor) Brain Shop Get Request"
+				},
 				"url": {
-					"raw": ""
+					"raw": "http://api.brainshop.ai/get?bid=155154&key=GaaTEjuT8pJv3n5L&uid=tempUser&msg=tell me a joke",
+					"protocol": "http",
+					"host": [
+						"api",
+						"brainshop",
+						"ai"
+					],
+					"path": [
+						"get"
+					],
+					"query": [
+						{
+							"key": "bid",
+							"value": "155154"
+						},
+						{
+							"key": "key",
+							"value": "GaaTEjuT8pJv3n5L"
+						},
+						{
+							"key": "uid",
+							"value": "tempUser"
+						},
+						{
+							"key": "msg",
+							"value": "tell me a joke"
+						}
+					]
 				}
 			},
 			"response": []
@@ -131,9 +177,26 @@
 			"name": "User - Get all Chat Conversations",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOiI0ODNmZTAwMy1mZWE0LTQ3YTAtYjg0MC04ZDc1Nzc0YjY3ZGIiLCJleHAiOjE2MTUyODM2NTR9.3hiR3Vqw74WlwH34hx2pAEyuH0swW-d-saZSRELCR08",
+						"type": "text"
+					}
+				],
 				"url": {
-					"raw": ""
+					"raw": "http://127.0.0.1:5000/chat",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"chat"
+					]
 				}
 			},
 			"response": []
@@ -142,9 +205,27 @@
 			"name": "Admin - Delete all Chat Conversations",
 			"request": {
 				"method": "DELETE",
-				"header": [],
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOiIyM2QzYjMxZi03YTExLTRkNjgtODU0Zi0xNjliNGUxMjViN2UiLCJleHAiOjE2MTUyODM4NTl9.nToI1sEJyx8zNdaLDXFO8vpP58MnUoOdGS9bP7rTv8I",
+						"type": "text"
+					}
+				],
 				"url": {
-					"raw": ""
+					"raw": "http://127.0.0.1:5000/chat/483fe003-fea4-47a0-b840-8d75774b67db",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"chat",
+						"483fe003-fea4-47a0-b840-8d75774b67db"
+					]
 				}
 			},
 			"response": []
@@ -156,7 +237,12 @@
 				"header": [
 					{
 						"key": "x-access-token",
-						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOiI0ODNmZTAwMy1mZWE0LTQ3YTAtYjg0MC04ZDc1Nzc0YjY3ZGIiLCJleHAiOjE2MTQ5OTk1OTd9.LicnW6l-I_kdEh5Ao-vWdDhgFfm0sYTN_-zbs0TG4lc",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOiI0ODNmZTAwMy1mZWE0LTQ3YTAtYjg0MC04ZDc1Nzc0YjY3ZGIiLCJleHAiOjE2MTUyODM2NTR9.3hiR3Vqw74WlwH34hx2pAEyuH0swW-d-saZSRELCR08",
+						"type": "text"
+					},
+					{
+						"key": "",
+						"value": "",
 						"type": "text"
 					}
 				],
@@ -180,11 +266,26 @@
 		{
 			"name": "Admin - Get all users",
 			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "12345",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "Thoshitha",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [
 					{
 						"key": "x-access-token",
-						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOiI0ODNmZTAwMy1mZWE0LTQ3YTAtYjg0MC04ZDc1Nzc0YjY3ZGIiLCJleHAiOjE2MTUxMTk0Mjl9.pOSlenqCcJL9s7xOYImwMv9r0SjBp53FmIT_D8UYp6c",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOiIyM2QzYjMxZi03YTExLTRkNjgtODU0Zi0xNjliNGUxMjViN2UiLCJleHAiOjE2MTUyODM4NTl9.nToI1sEJyx8zNdaLDXFO8vpP58MnUoOdGS9bP7rTv8I",
 						"type": "text"
 					}
 				],
@@ -227,13 +328,13 @@
 				"header": [
 					{
 						"key": "x-access-token",
-						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOiI0ODNmZTAwMy1mZWE0LTQ3YTAtYjg0MC04ZDc1Nzc0YjY3ZGIiLCJleHAiOjE2MTUxMDQzMzZ9.uOdmhizOHLbBA_rbaZ_Z0A23w5KGIOgelc9tPL7L6C4",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOiI0ODNmZTAwMy1mZWE0LTQ3YTAtYjg0MC04ZDc1Nzc0YjY3ZGIiLCJleHAiOjE2MTUyODM2NTR9.3hiR3Vqw74WlwH34hx2pAEyuH0swW-d-saZSRELCR08",
 						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"userInput\" : \"Happy\"\r\n}",
+					"raw": "{\r\n    \"userInput\" : \"My friend passed away\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -264,7 +365,7 @@
 				"header": [
 					{
 						"key": "x-access-token",
-						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOiI0ODNmZTAwMy1mZWE0LTQ3YTAtYjg0MC04ZDc1Nzc0YjY3ZGIiLCJleHAiOjE2MTUxOTM0MzZ9.mJeWvgHJSAYNQ0XRLTNNlgD3jpHzc1dMO8-5jiwVflo",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOiI0ODNmZTAwMy1mZWE0LTQ3YTAtYjg0MC04ZDc1Nzc0YjY3ZGIiLCJleHAiOjE2MTUyODM2NTR9.3hiR3Vqw74WlwH34hx2pAEyuH0swW-d-saZSRELCR08",
 						"type": "text"
 					}
 				],
@@ -292,7 +393,7 @@
 				"header": [
 					{
 						"key": "x-access-token",
-						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOiI0ODNmZTAwMy1mZWE0LTQ3YTAtYjg0MC04ZDc1Nzc0YjY3ZGIiLCJleHAiOjE2MTUxOTM0MzZ9.mJeWvgHJSAYNQ0XRLTNNlgD3jpHzc1dMO8-5jiwVflo",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOiI0ODNmZTAwMy1mZWE0LTQ3YTAtYjg0MC04ZDc1Nzc0YjY3ZGIiLCJleHAiOjE2MTUyODUzNzJ9.AxniNM6BjdDTY22PLNputmUUcfpPLM9of415oRwGiRk",
 						"type": "text"
 					}
 				],
@@ -327,10 +428,98 @@
 				"header": [
 					{
 						"key": "x-access-token",
-						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOiI0ODNmZTAwMy1mZWE0LTQ3YTAtYjg0MC04ZDc1Nzc0YjY3ZGIiLCJleHAiOjE2MTUxOTM0MzZ9.mJeWvgHJSAYNQ0XRLTNNlgD3jpHzc1dMO8-5jiwVflo",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOiI0ODNmZTAwMy1mZWE0LTQ3YTAtYjg0MC04ZDc1Nzc0YjY3ZGIiLCJleHAiOjE2MTUyODM2NTR9.3hiR3Vqw74WlwH34hx2pAEyuH0swW-d-saZSRELCR08",
 						"type": "text"
 					}
 				],
+				"url": {
+					"raw": "http://127.0.0.1:5000/quotes",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"quotes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Admin - Create New User",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOiIyM2QzYjMxZi03YTExLTRkNjgtODU0Zi0xNjliNGUxMjViN2UiLCJleHAiOjE2MTUyODM4NTl9.nToI1sEJyx8zNdaLDXFO8vpP58MnUoOdGS9bP7rTv8I",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Shohan\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/user",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Admin - Promote User",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOiIyM2QzYjMxZi03YTExLTRkNjgtODU0Zi0xNjliNGUxMjViN2UiLCJleHAiOjE2MTUyODM4NTl9.nToI1sEJyx8zNdaLDXFO8vpP58MnUoOdGS9bP7rTv8I",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:5000/user/<public-id>",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"user",
+						"<public-id>"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Admin - Delete User",
+			"request": {
+				"method": "GET",
+				"header": [],
 				"url": null
 			},
 			"response": []

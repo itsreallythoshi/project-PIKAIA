@@ -1,27 +1,26 @@
-import json
-import time
 from flask import Flask, request, jsonify, make_response
 from flask_sqlalchemy import SQLAlchemy
-from tensorflow.python.keras.preprocessing.sequence import pad_sequences
 from werkzeug.security import generate_password_hash, check_password_hash
-from keras.models import load_model
 from functools import wraps
+from emotion_analysis import preProcessEmotionModel
+
 import uuid
 import jwt
 import datetime
+import requests
 import numpy as np
 
-from pandas import read_csv
-import pandas as pd
-from math import sqrt
-from scipy.spatial.distance import euclidean, cosine
 
-# Activate virtual env
-# .\env\Scripts\activate
+# RUN REQUIREMENT.TXT FILE TO INSTALL DEPENDENCIES
+# cd to the directory where requirements.txt is located.
+# activate your virtualenv.
+# run: pip install -r requirements.txt in your shell.
 
-# preparing input to our model
-from keras.preprocessing.text import Tokenizer
 
+
+# we import requests to make HTTP requests to the Brain Shop API
+# library installs and important pre-requisites
+# $ pip install requests
 # datetime to create an expiration for jwt
 # jwt for generating json web token -
 # we are using PyJWT not JWT... so $ pip uninstall JWT $ pip install PyJWT - Question:33198428
@@ -49,7 +48,6 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     public_id = db.Column(db.String(50), unique=True)
     name = db.Column(db.String(50))
-    name = db.Column(db.String(50))
     password = db.Column(db.String(80))
     admin = db.Column(db.Boolean)
 
@@ -64,18 +62,27 @@ class Todo(db.Model):
     user_id = db.Column(db.Integer)
 
 
-# numpy to jason encoder
-class NumpyEncoder(json.JSONEncoder):
-    """ Special json encoder for numpy types """
+# we need a public key for each chat conversation
+# TODO: add foreign key
+class Chat(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    public_id = db.Column(db.String(50), unique=True)
+    user_sentence = db.Column(db.String(200))
+    chatbot_sentence = db.Column(db.String(200))
+    user_emotion = db.Column(db.String(10))
+    user_id = db.Column(db.Integer)
 
-    def default(self, obj):
-        if isinstance(obj, np.integer):
-            return int(obj)
-        elif isinstance(obj, np.floating):
-            return float(obj)
-        elif isinstance(obj, np.ndarray):
-            return obj.tolist()
-        return json.JSONEncoder.default(self, obj)
+
+class Emotion(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    public_id = db.Column(db.String(50), unique=True)
+    user_input = db.Column(db.String(200))
+    user_emotion = db.Column(db.String(10))
+    user_id = db.Column(db.Integer)
+
+
+# class Name on Emotions
+class_names = ['joy', 'fear', 'anger', 'sadness', 'neutral']
 
 
 # ============== decorator for header
@@ -156,34 +163,6 @@ def get_all_users(current_user):
         output.append(user_data)
 
     return jsonify({'users': output})
-
-
-# Emotion Analysis
-@app.route('/emotion', methods=['POST'])
-@token_required
-def get_emotion(current_user):
-    # query the database to find all to-do's that belong to the current user
-    todos = Todo.query.filter_by(user_id=current_user.id).all()
-
-    # Max input length (max number of words)
-    max_seq_len = 500
-    class_names = ['joy', 'fear', 'anger', 'sadness', 'neutral']
-    emotion = request.get_json()
-
-    print(emotion)
-    model = load_model('ML__model/bi_gru_w2vec_v2_30eps.h5')
-
-    # Tokenizer
-    tokenizer = Tokenizer()
-    seq = tokenizer.texts_to_sequences(emotion)
-    padded = pad_sequences(seq, maxlen=max_seq_len)
-
-    start_time = time.time()
-    predictions = model.predict(padded)
-    dumped = json.dumps(predictions, cls=NumpyEncoder)
-    print('Message: ' + str(emotion))
-    return jsonify(
-        'prediction: {} ({:.2f} seconds)'.format(class_names[np.argmax(predictions)], (time.time() - start_time))), 200
 
 
 # get one user
@@ -336,10 +315,7 @@ def get_one_todo(current_user, todo_id):
         return jsonify({'message': 'No todo found!'})
 
     # to-do was found
-    todo_data = {}
-    todo_data['id'] = todo.id
-    todo_data['text'] = todo.text
-    todo_data['complete'] = todo.complete
+    todo_data = {'id': todo.id, 'text': todo.text, 'complete': todo.complete}
     return jsonify(todo_data)
 
 
@@ -384,88 +360,216 @@ def delete_todo(current_user, todo_id):
     return jsonify({'message': 'Todo item deleted!'})
 
 
-# =================================================================
-# -------------------------- Recommender --------------------------
-# =================================================================
-
-class Music(db.Model):
-    music_id = db.Column(db.Integer, primary_key=True)
-    public_music_id = db.Column(db.String(50), unique=True)
-    music_name = db.Column(db.String(50))
-    music_link = db.Column(db.String(100))
-
-    @validates('music_link')
-    def validate_name(self, key, value):
-        assert value != 'www.'
-        return value
-
-
-class Ratings(db.model):
-    music_id = db.Column(db.String(50), foreign_key('music.music_id'))
-    id = db.Column(db.Integer, foreign_key('user.id'))
-    ratings = db.Column(db.Integer)
-
-
-@app.route('/add-music', methods=['POST'])
+# ============================= Normal User CHAT ROUTES =============================
+# TODO: add validation and error handling code
+# json request body structure
+# { 'userInput' : 'hi, How's the weather today?' }
+@app.route('/chat', methods=['POST'])
 @token_required
-def add_music(current_user):
-    # allowing only admin user to perform an action
-    if not current_user.admin:
-        return jsonify({'message': 'You do not have the permission to perform that function!'})
+def create_chat_conversation(current_user):
+    # admin users cannot have chats
+    if current_user.admin:
+        return jsonify({'message': 'Admin users cannot create chat conversations!'})
 
-    data = request.get_json()
-    new_music = Music(public_id=str(uuid.uuid4()), music_name=data['music_name'], music_link=data['music_link'])
-    db.session.add(new_music)
+    client_data = request.get_json(force=True)
+    # Encoding json
+    encodedRequest = ([client_data['userInput']])
+
+    user_emotion = (class_names[np.argmax(preProcessEmotionModel(encodedRequest))])
+
+    brain_shop_payload = {
+        'bid': '155151',
+        'key': 'tKJeOa4WLS84Eyee',
+        'uid': current_user.id,
+        'msg': client_data['userInput']
+    }
+    brain_shop_endpoint = 'http://api.brainshop.ai/get?'
+
+    try:
+        # GET request to brain API
+        chatbot_request = requests.get(brain_shop_endpoint, params=brain_shop_payload)
+        brain_data = chatbot_request.json()
+        chatbot_sentence = brain_data['cnt']
+
+    except:
+        return jsonify({'error': 'Brainshop service unavailable'}), 503
+
+    # Saving data
+    new_conversation = Chat(public_id=str(uuid.uuid4()), user_sentence=client_data['userInput'],
+                            chatbot_sentence=chatbot_sentence, user_id=current_user.id, user_emotion=user_emotion)
+    db.session.add(new_conversation)
     db.session.commit()
-    return jsonify({'message': 'New music added!'})
+
+    return jsonify(
+        {'chatBotResponse': chatbot_sentence,
+         'userInputEmotion': user_emotion
+         })
 
 
-@app.route('/recommend-music', methods=['GET'])
+@app.route('/chat', methods=['GET'])
 @token_required
-def recommend_music(current_user):
-    musics = Music.query.filter_by(user_id=current_user.id).all()
+def get_all_chat_conversations(current_user):
+    # admin users cannot have chats
+    if current_user.admin:
+        return jsonify({'message': 'Admin users cannot read user chat conversations!'})
+
+    conversations = Chat.query.filter_by(user_id=current_user.id).all()
+
+    # an array to hold all the dictionaries
     output = []
-    for music in musics:
-        music_data = {'music_id': music.music_id, 'music_name': music.music_name}
-        output.append(music_data)
-    return jsonify({'musics': output})
+    # inserting each to-do into it's own dictionary
+    for conversation in conversations:
+        conversation_data = {'public_id': conversation.public_id, 'user_sentence': conversation.user_sentence,
+                             'chatbot_sentence': conversation.chatbot_sentence,
+                             'user_emotion': conversation.user_emotion}
+        output.append(conversation_data)
+    return jsonify({'conversations': output})
 
 
-@app.route('/recommend-music', methods=['GET'])
+@app.route('/chat/<user_public_id>', methods=['DELETE'])
 @token_required
-def recommend_music(current_user):
+def admin_delete_user_chat_conversations(current_user, user_public_id):
+    # normal users cannot delete other user's chats
+    if not current_user.admin:
+        return jsonify({'message': 'This delete route is not for Admin users user route /chat/[user_id]'})
 
-    df = pd.read_sql_query(Ratings.query.filter_by(user_id=current_user.id).all())
-    ratings = read_csv(df, index_col=0)
-    ratings = ratings.fillna(0)
+    user = User.query.filter_by(public_id=user_public_id).first()
+    if not user:
+        return jsonify({'message': 'no such user'})
 
-    def distance(person1, person2):
-        taste_distance = euclidean(person1, person2)
-        return taste_distance
+    userId = user.id
 
-    def most_similar_to(name):
-        person = ratings.loc[name]
-        closest_distance = float('inf')
-        closest_person = ''
-        for other_person in ratings.itertuples():
-            if other_person.Index == name:
-                # don't compare a person to themself
-                continue
-            distance_to_other_person = distance(person, ratings.loc[other_person.Index])
-            if distance_to_other_person < closest_distance:
-                # new high score! save it
-                closest_distance = distance_to_other_person
-                closest_person = other_person.Index
-        return closest_person, closest_distance
+    deleted = 0
+    while True:
+        conversation = Chat.query.filter_by(user_id=userId).first()
+        # no conversation in iteration
+        if not conversation:
+            break
 
+        db.session.delete(conversation)
+        deleted += 1
+
+    if deleted == 0:
+        return jsonify({'message': 'No conversations of user {} deleted!'.format(user_public_id)})
+
+    db.session.commit()
+    return jsonify({'message': 'chat data of user {} successfully deleted'.format(user_public_id)})
+
+
+@app.route('/chat', methods=['DELETE'])
+@token_required
+def user_delete_all_chat_conversations(current_user):
+    # admin users cannot use this route
+    if current_user.admin:
+        return jsonify({'message': 'This delete route is not for Admin users user route /chat/[user_id]'})
+
+    deleted = 0
+    while True:
+        conversation = Chat.query.filter_by(user_id=current_user.id).first()
+        # no conversation in iteration
+        if not conversation:
+            break
+
+        db.session.delete(conversation)
+        deleted += 1
+
+    if deleted == 0:
+        return jsonify({'message': 'No conversations to delete!'})
+
+    db.session.commit()
+    return jsonify({'message': 'all conversations successfully deleted'})
+
+
+# ========================== emotion endpoint ============================================
+@app.route('/emotions', methods=['GET'])
+@token_required
+def get_all_chat_emotions(current_user):
+    # admin users cannot have chats
+    if current_user.admin:
+        return jsonify({'message': 'Admin users cannot read user chat conversations!'})
+
+    emotions = Emotion.query.filter_by(user_id=current_user.id).all()
+
+    # an array to hold all the dictionaries
     output = []
-    ratings = Ratings.query.all()
-    rows = ratings.statement.execute().fetchall()
-    for row in rows:
-        user_similarity, user_distance = most_similar_to(row.user)
-        print(row, user_similarity, user_distance)
+    # inserting each to-do into it's own dictionary
+    for emotion in emotions:
+        emotion_data = {'id': emotion.id, 'public_id': emotion.public_id, 'user_Input': emotion.user_input,
+                        'user_emotion': emotion.user_emotion}
+        output.append(emotion_data)
+    return jsonify({'emotions': output})
 
-    return jsonify({'musics': output})
+
+@app.route('/emotion', methods=['POST'])
+@token_required
+def user_get_emotion(current_user):
+    if current_user.admin:
+        return jsonify({'message': 'This delete route is not for Admin users user route /chat/[user_id]'})
+
+    # Requesting and Encoding jason data
+    client_request = request.get_json(force=True)
+
+    # Encoding json
+    encodedRequest = ([client_request['userInput']])
+
+    user_emotion = (class_names[np.argmax(preProcessEmotionModel(encodedRequest))])
+
+    # Saving data
+    new_emotion = Emotion(public_id=str(uuid.uuid4()), user_input=client_request['userInput'],
+                          user_emotion=user_emotion, user_id=current_user.id)
+    db.session.add(new_emotion)
+    db.session.commit()
+
+    return jsonify({'userInputEmotion': user_emotion}), 200
+
+
+@app.route('/emotions', methods=['DELETE'])
+@token_required
+def user_delete_all_emotions(current_user):
+    # admin users cannot use this route
+    if current_user.admin:
+        return jsonify({'message': 'This delete route is not for Admin users user route /chat/[user_id]'})
+
+    deleted = 0
+    while True:
+        emotion_query = Emotion.query.filter_by(user_id=current_user.id).first()
+        # no emotion in iteration
+        if not emotion_query:
+            break
+
+        db.session.delete(emotion_query)
+        deleted += 1
+
+    if deleted == 0:
+        return jsonify({'message': 'No emotions to delete!'})
+
+    db.session.commit()
+    return jsonify({'message': 'all emotions were successfully deleted'})
+
+
+# ========================== quotes endpoint ============================================
+@app.route('/quotes', methods=['GET'])
+@token_required
+def user_get_quote(current_user):
+    # admin users cannot have chats
+    if current_user.admin:
+        return jsonify({'message': 'Admin users cannot use quotes!'})
+
+    quotes_endpoint = 'https://quotes.rest/qod?category=inspire'
+    api_token = "25632gadhgahs6276712"
+    headers = {'content-type': 'application/json',
+               'X-TheySaidSo-Api-Secret': format(api_token)}
+
+    try:
+        # GET request to quotes API
+        response = requests.get(quotes_endpoint, headers=headers)
+    except:
+        return jsonify({'error': 'Quote service unavailable'}), 503
+
+    quote = response.json()['contents']['quotes'][0]['quote']
+    author = response.json()['contents']['quotes'][0]['author']
+
+    return jsonify({'quotes': quote, 'author': author})
 
 
 if __name__ == '__main__':

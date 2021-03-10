@@ -10,7 +10,11 @@ function Dashboard() {
         while assiging the class name, as it's required in CSS Grid*/}
 
       <div className="dashboard__container">
-        <MusicPlayer className="dashboard__musicPlayer" />
+        <div className="dashboard__left"></div>
+        <div className="dashboard__middle"></div>
+        <div className="dashboard__left">
+          <MusicPlayer className="dashboard__musicPlayer" />
+        </div>
       </div>
     </div>
   );

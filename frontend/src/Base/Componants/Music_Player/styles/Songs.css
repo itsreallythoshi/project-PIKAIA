@@ -1,0 +1,12 @@
+.song-container {
+  display: flex;
+  width: 40%;
+  align-items: center;
+  justify-content: space-between;
+}
+.song-container > img {
+  margin-right: 1rem;
+  width: 80%;
+  border-radius: 20px;
+  height: auto;
+}

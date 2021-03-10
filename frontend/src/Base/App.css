@@ -6,4 +6,5 @@
   height: 100vh;
   width: 100%;
   background-color: #170036;
+  overflow: hidden;
 }

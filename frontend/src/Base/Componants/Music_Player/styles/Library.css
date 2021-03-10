@@ -1,0 +1,55 @@
+.library {
+  max-width: 27em;
+  padding: 0.1rem;
+  max-height: 24em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+.library-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  overflow-y: scroll;
+}
+.heading-container {
+  width: 10em;
+  height: 1.4em;
+  border-radius: 20px;
+  background-color: #9e8cef;
+  align-content: center center;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.heading-container > h5 {
+  margin: 0.2rem;
+  text-align: center;
+  font-family: "Museo Sans Rounded 700";
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(75, 73, 73, 0.5) transparent;
+}
+
+/* for chrome scrollbar */
+*::-webkit-scrollbar {
+  width: 5px;
+  height: 100%;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: #2110377a;
+  border-radius: 20px;
+  border: transparent;
+}
+
+.active {
+  background: #b2a8dfc4;
+}

@@ -1,0 +1,63 @@
+.library-songs {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.4rem 0.4rem;
+  width: 100%;
+}
+
+.library-song {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  margin-right: 0.5rem;
+  min-width: 98%;
+  width: 98%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  border-radius: 20px;
+  background: #2110377a;
+  transition: background 0.5s ease;
+  position: relative;
+}
+
+.library-song:hover {
+  background: rgba(188, 175, 235, 0.151);
+}
+.library-song > img {
+  margin-right: 1rem;
+  padding: 0.5rem;
+  width: 5rem;
+  border-radius: 20px;
+  height: 5rem;
+}
+.song-description > h5 {
+  font-family: "Museo Sans Rounded 100";
+}
+.song-description > h3 {
+  font-family: "Museo Sans Rounded 500";
+}
+.song-rating {
+  position: absolute;
+  top: 25%;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-right: 1rem;
+}
+.song-rating > button {
+  margin: 0.5rem;
+}
+.song-rating > button svg {
+  color: #fff;
+  cursor: pointer;
+}
+.song-rating > button svg:hover {
+  color: rgb(158, 144, 211);
+}
+
+.active {
+  background: rgb(158, 144, 211);
+}

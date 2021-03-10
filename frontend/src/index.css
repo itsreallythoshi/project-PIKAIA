@@ -1,8 +1,17 @@
 @import url(//db.onlinewebfonts.com/c/179429c3795fb9aed42c526bd1133cc0?family=SF+Pro+Display);
 
+
+  @font-face {
+  font-family: 'Museo Sans Rounded 100';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Museo Sans Rounded 100'), url('./Font/MuseoSansRounded100.woff') format('woff');
+  }
+
 body {
   margin: 0;
-  font-family: "SF Pro Rounded", system-ui, san-serif;
+  font-family:'Museo Sans Rounded 700';
+  font-weight:normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: white;

@@ -1,0 +1,11 @@
+.chat {
+  width: 100%;
+  height: 24rem;
+  padding: 0.1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  background-image: linear-gradient(180deg, #ffffff00 40%, #20006656 130%);
+  border-radius: 20px;
+}

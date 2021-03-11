@@ -1,6 +1,7 @@
 import React from "react";
+import Chat__Container from "./Chat/Chat__Container";
+import Controls from "./Controls/Controls";
 import "./Dashboard.css";
-import Library from "./Music_Player/components/Library";
 import MusicPlayer from "./Music_Player/MusicPlayer";
 
 function Dashboard() {
@@ -10,10 +11,14 @@ function Dashboard() {
         while assiging the class name, as it's required in CSS Grid*/}
 
       <div className="dashboard__container">
-        <div className="dashboard__left"></div>
-        <div className="dashboard__middle"></div>
         <div className="dashboard__left">
-          <MusicPlayer className="dashboard__musicPlayer" />
+          <Controls />
+        </div>
+        <div className="dashboard__middle">
+          <Chat__Container />
+        </div>
+        <div className="dashboard__left">
+          <MusicPlayer />
         </div>
       </div>
     </div>

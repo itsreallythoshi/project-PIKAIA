@@ -1,7 +1,7 @@
 .player {
   border-radius: 20px;
-  max-width: 25em;
-  max-height: 12em;
+  width: 23em;
+  height: 10em;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -15,6 +15,7 @@ button {
   border: 0px;
   background: transparent;
   outline: none;
+  cursor: pointer;
 }
 .disabled {
   color: grey;
@@ -112,22 +113,6 @@ button {
   width: 92%;
   height: 80%;
 }
-
-.time-control:focus {
-  outline: none;
-}
-.time-control::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  height: 8px;
-  width: 8px;
-}
-.time-control::-moz-range-thumb {
-  -webkit-appearance: none;
-  background: transparent;
-  border: none;
-  background-color: #30dfb324;
-}
-
 .track {
   width: 70%;
   height: 5px;
@@ -142,6 +127,7 @@ button {
   cursor: pointer;
   -webkit-appearance: none;
 }
+
 /* 
 // seekbar customization */
 input[type="range"]:focus {
@@ -169,4 +155,22 @@ input[type="range"]::-moz-range-thumb {
   left: 0;
   transform: translateX(0%);
   pointer-events: none;
+  align-items: center;
+}
+
+.track__handle {
+  position: absolute;
+  top: 0;
+  cursor: pointer;
+  left: 15%;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: rgb(255, 255, 255);
+  z-index: 99;
+  display: none;
+}
+
+.track_container:hover > .track__handle {
+  display: block;
 }

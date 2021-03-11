@@ -7,7 +7,6 @@ import "./styles/MusicPlayer.css";
 import data from "./utilities/utils";
 
 // components
-import Song from "./components/Song";
 import Player from "./components/Player";
 import Library from "./components/Library";
 

@@ -53,10 +53,13 @@ const Player = ({
     }
   }, [currentSong, isPlaying, audioRef]);
 
-
+  const handleAnimation = {
+    transform: `translateX(${songState.seekbarPercentage * 17}%)`,
+  };
   const trackAnimation = {
     transform: `translateX(${songState.seekbarPercentage}%)`,
   };
+
   return (
     <div className="player">
       <div className="player__top">
@@ -94,6 +97,10 @@ const Player = ({
       </div>
       <div className="track_container">
         <p>{getNormalTime(songState.currentTime)}</p>
+        <div
+          className="track__handle"
+          style={handleAnimation}
+        ></div>
         <div
           style={{
             background: `linear-gradient(to right, ${currentSong.color[0]}, ${currentSong.color[1]} )`,

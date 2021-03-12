@@ -1,8 +1,5 @@
-[x] - get react running
-[x] - set up routes
 [x] - add user specific routes - for now have it as user (generic-placeholder) - but later have it as username (user-specific)
 [x] - set up placeholder pages
-[] - add boiler plate component
 [] - make layout.css file and make the whole skeleton responsive
 [] - make the lights-out feature
 

@@ -1,8 +1,0 @@
-.control {
-  display: flex;
-  width: 25rem;
-  height: 100%;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-}

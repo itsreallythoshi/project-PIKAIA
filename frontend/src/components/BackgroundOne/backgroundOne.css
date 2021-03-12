@@ -1,0 +1,18 @@
+.bgOne {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.bgOne__topWaves {
+  width: 100%;
+  height: auto;
+}
+.bgOne__bottomWaves {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: auto;
+}

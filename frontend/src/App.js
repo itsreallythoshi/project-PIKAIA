@@ -1,9 +1,9 @@
 import React from "react";
 
-import "./App.css";
+import "./app.css";
 
-import AppContainer from "./App/AppContainer";
-import BackgroundOne from "./Base/BackgroundOne";
+import AppContainer from "./layout/AppContainer/AppContainer";
+import BackgroundOne from "./components/BackgroundOne/BackgroundOne";
 
 export default function App() {
   return (

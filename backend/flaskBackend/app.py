@@ -1,5 +1,7 @@
 from flask import Flask, request, jsonify, make_response
 from flask_sqlalchemy import SQLAlchemy
+from scipy.spatial.distance import euclidean
+from sqlalchemy import ForeignKey
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
 from emotion_analysis import preProcessEmotionModel
@@ -10,12 +12,10 @@ import datetime
 import requests
 import numpy as np
 
-
 # RUN REQUIREMENT.TXT FILE TO INSTALL DEPENDENCIES
 # cd to the directory where requirements.txt is located.
 # activate your virtualenv.
 # run: pip install -r requirements.txt in your shell.
-
 
 
 # we import requests to make HTTP requests to the Brain Shop API
@@ -79,6 +79,19 @@ class Emotion(db.Model):
     user_input = db.Column(db.String(200))
     user_emotion = db.Column(db.String(10))
     user_id = db.Column(db.Integer)
+
+
+class Songs(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    song_name = db.Column(db.String(50), unique=True)
+    song_link = db.Column(db.String(1000))
+
+
+class Ratings(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    song_id = db.Column(db.Integer, ForeignKey('songs.id'))
+    user_id = db.Column(db.Integer, ForeignKey('user.id'))
+    ratings = db.Column(db.Integer)
 
 
 # class Name on Emotions
@@ -523,6 +536,21 @@ def user_get_emotion(current_user):
     return jsonify({'userInputEmotion': user_emotion}), 200
 
 
+@app.route('/rating', methods=['POST'])
+@token_required
+def user_create_song_rating(current_user):
+    # admin users cannot use this route
+    if current_user.admin:
+        return jsonify({'message': 'This delete route is not for Admin users user route /chat/[user_id]'})
+
+    data = request.get_json()
+
+    new_rating = Ratings(song_id=data['song_id'], user_id=current_user.id, ratings=data['rating'])
+    db.session.add(new_rating)
+    db.session.commit()
+    return jsonify({'message': 'Rating added'})
+
+
 @app.route('/emotions', methods=['DELETE'])
 @token_required
 def user_delete_all_emotions(current_user):
@@ -570,6 +598,30 @@ def user_get_quote(current_user):
     author = response.json()['contents']['quotes'][0]['author']
 
     return jsonify({'quotes': quote, 'author': author})
+
+
+# ========================== Music endpoint ============================================
+@app.route('/add-music', methods=['POST'])
+@token_required
+def add_music(current_user):
+    # allowing only admin user to perform an action
+    if not current_user.admin:
+        return jsonify({'message': 'You do not have the permission to perform that function!'})
+
+    data = request.get_json()
+    new_song = Songs(song_name=data['song_name'], song_link=data['song_link'])
+    db.session.add(new_song)
+    db.session.commit()
+    return jsonify({'message': 'New music added!'})
+
+
+# @app.route('/recommend-music', methods=['GET'])
+# @token_required
+# def recommend_music(current_user):
+#     user = User.query.all()
+#     ratings = Ratings.query.all()
+#     print(ratings)
+#     return jsonify({'musics': "Terminal"})
 
 
 if __name__ == '__main__':

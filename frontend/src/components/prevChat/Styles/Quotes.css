@@ -26,9 +26,26 @@
 
 .quotes__greeting > h1 {
   font-size: 30px;
+  margin-bottom: 0.4rem;
+}
+.apiQuote {
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-self: center;
+  height: 5rem;
 }
 
-.quotes__words > p {
-  margin-top: 0.4rem;
-  font-size: 14px;
+.apiQuote:hover > .apiQuote__author {
+  visibility: visible;
+  opacity: 1;
+}
+
+.apiQuote__author {
+  margin-top: 0.5rem;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s, opacity 0.2s linear;
+  text-align: center;
 }

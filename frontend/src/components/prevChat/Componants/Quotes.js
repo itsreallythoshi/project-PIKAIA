@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import "../Styles/Quotes.css";
 import Morning from "../assets/Morning-Clouds.svg";
 import Night from "../assets/Night Clouds.svg";
+import Noon from "../assets/Noon Clouds.svg";
+import QuoteApi from "./QuotesApi";
 
 class Quotes extends Component {
   state = { today: new Date(), hour: null, username: "Jhon" };
@@ -19,6 +21,7 @@ class Quotes extends Component {
   getHour = () => {
     const date = new Date();
     const hour = date.getHours();
+
     this.setState({
       hour,
     });
@@ -48,10 +51,7 @@ class Quotes extends Component {
             </h1>
           </div>
           <div className="quotes__words">
-            <p>
-              "Your success will not be determined by your gender or your
-              ethnicity, but only on the scope of your dreams."
-            </p>
+            <QuoteApi />
           </div>
         </div>
         <div className="quotes__right">

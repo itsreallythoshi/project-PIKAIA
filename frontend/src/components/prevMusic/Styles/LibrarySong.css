@@ -1,0 +1,97 @@
+.librarySong {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  min-height: 4.1rem;
+  max-height: 6rem;
+  width: 97%;
+  border-radius: 10px;
+  background-color: var(--library-color);
+  margin-top: 10.9px;
+  transition: transform 0.1s ease-out;
+}
+
+.active {
+  background-color: var(--active-color);
+}
+
+.librarySong:hover {
+  transform: scale(1.01);
+  background-color: var(--hover-color);
+}
+
+.librarySong__album {
+  width: auto;
+  height: 80%;
+  overflow: hidden;
+  border-radius: 10px;
+  margin-left: 10px;
+  margin-right: 20px;
+  display: none;
+}
+
+.musicWidget__album > img {
+  height: auto;
+  width: 100%;
+}
+
+.librarySong__artistDummy {
+  display: none;
+}
+
+/* for chrome scrollbar */
+*::-webkit-scrollbar {
+  width: 5px;
+  height: 100%;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: #1616167a;
+  border-radius: 20px;
+  border: transparent;
+}
+
+.librarySong__name {
+  width: 20%;
+}
+
+.librarySong__artist {
+  width: 20%;
+}
+.librarySong__time {
+  width: 10%;
+}
+.librarySong__rating {
+  display: flex;
+  justify-content: space-around;
+  width: 10%;
+  text-align: center;
+}
+
+@media only screen and (max-width: 768px) {
+  .librarySong__time {
+    display: none;
+  }
+  .librarySong {
+    min-height: 6.1rem;
+  }
+  .librarySong__name {
+    width: 40%;
+  }
+
+  .librarySong__artist {
+    display: none;
+  }
+  .librarySong__artistDummy {
+    margin-top: 5px;
+    display: block;
+  }
+  .librarySong__artistDummy > p {
+    font-size: 12px;
+  }
+  .librarySong__album {
+    display: block;
+  }
+}

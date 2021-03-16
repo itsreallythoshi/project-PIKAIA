@@ -1,12 +1,13 @@
 import React from "react";
+import Home from "./assets/Home Button.svg";
 
 import "./footer.css";
 
 const Footer = () => {
   return (
-    <footer className="footer">
-      <h2>Footer</h2>
-    </footer>
+    <div className="footer">
+      <div className="footer__homeBtn">{/* <img src={Home} alt="" /> */}</div>
+    </div>
   );
 };
 

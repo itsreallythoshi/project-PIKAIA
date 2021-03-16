@@ -1,3 +1,23 @@
 .dashboard {
-  height: 80%;
+  height: 90%;
+  border-radius: 20px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.dashbord__container {
+  height: 90%;
+  max-height: 90%;
+  background-color: transparent;
+  backdrop-filter: blur(30px);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.dashbord__swipableContainer {
+  overflow-y: hidden;
 }

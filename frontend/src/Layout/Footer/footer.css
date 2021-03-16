@@ -2,8 +2,14 @@
   width: 100%;
   height: 6vh;
   display: flex;
-  background-color: #762f972d;
-  backdrop-filter: blur(40px);
-  border-radius: 50px;
-  border: 1px solid rgba(196, 191, 191, 0.356);
+  background-color: #201f2224;
+  backdrop-filter: blur(100px);
+  border-radius: 5rem;
+  /* border: 0.1rem solid #ffffff33; */
+  justify-content: space-around;
+  align-items: center;
+}
+.footer__homeBtn {
+  pointer-events: none;
+  margin-top: -3rem;
 }

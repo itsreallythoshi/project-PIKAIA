@@ -1,13 +1,11 @@
 import React from "react";
 
-import Header from "./../../layout/Header/Header";
-import Footer from "./../../layout/Footer/Footer";
-import Dashboard from "./../../layout/Dashboard/Dashboard";
+import Footer from "../../Layout/Footer/Footer";
+import Dashboard from "../../Layout/Dashboard/Dashboard";
 
 const User = () => {
   return (
     <>
-      <Header />
       <Dashboard />
       <Footer />
     </>

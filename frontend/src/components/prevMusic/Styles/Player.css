@@ -1,0 +1,220 @@
+.musicWidget {
+  color: #ffffff !important;
+  width: 87%;
+  margin-right: 6.5%;
+  margin-left: 6.5%;
+  height: 7rem;
+  border-radius: 20px;
+  background-color: var(--dark-blur);
+  /* backdrop-filter: blur(30px); */
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.musicWidget__album {
+  width: 6rem;
+  height: 6rem;
+  overflow: hidden;
+  border-radius: 10px;
+  margin-left: 10px;
+  margin-right: 20px;
+}
+
+.musicWidget__album > img {
+  height: auto;
+  width: 100%;
+}
+
+.musicWidget__Info {
+  width: 15rem;
+}
+.musicWidget__Info > p {
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.473);
+}
+
+.musicWidget__controls {
+  display: flex;
+  height: 0%;
+  justify-content: space-around;
+}
+.disabled {
+  color: grey;
+}
+
+.musicWidget__trackContainer {
+  height: 40%;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.musicWidget__controls > button {
+  border: 0px;
+  background: transparent;
+  outline: none;
+}
+.musicWidget__controls > button:hover {
+  transform: scale(1.1);
+}
+
+.musicWidget__controls > button > .MuiSvgIcon-root {
+  color: white !important;
+}
+
+.musicWidget__controls > .skip-forward > .MuiSvgIcon-root {
+  font-size: 30px !important;
+}
+.musicWidget__controls > .skip-back > .MuiSvgIcon-root {
+  font-size: 30px !important;
+}
+
+.disabled {
+  color: grey;
+}
+
+.track {
+  width: 70%;
+  height: 5px;
+  position: relative;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.track > input {
+  width: 100%;
+  background: transparent;
+  cursor: pointer;
+  -webkit-appearance: none;
+}
+
+/* 
+// seekbar customization */
+input[type="range"]:focus {
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 3px;
+  width: 3px;
+}
+
+input[type="range"]::-moz-range-thumb {
+  -webkit-appearance: none;
+  background: transparent;
+  border: none;
+}
+
+.animate-track {
+  background: rgba(0, 0, 0, 0.404);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translateX(0%);
+  pointer-events: none;
+  align-items: center;
+}
+
+.track {
+  margin-left: 1rem;
+  margin-right: 1rem;
+  width: 100%;
+  height: 20%;
+  border-radius: 20px;
+  display: flex;
+  background: #ffffff;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+.track_container {
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  position: relative;
+}
+.musicWidget__container {
+  width: 55%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.musicWidget__other > .musicWidget__button {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+@media only screen and (max-width: 768px) {
+  .musicWidget {
+    flex-direction: column;
+    height: 45%;
+  }
+  .musicWidget__album {
+    width: 90%;
+    height: 70%;
+  }
+  .musicWidget__album > img {
+    opacity: 0.8;
+  }
+  .musicWidget__album {
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+  .musicWidget__controls {
+    position: absolute;
+    width: 100%;
+    top: 20%;
+    height: 40%;
+    left: 0%;
+  }
+  .musicWidget__trackContainer {
+    width: 85%;
+    height: 5%;
+    left: 2rem;
+    bottom: 1rem;
+    position: absolute;
+  }
+  .musicWidget__trackContainer > p {
+    font-size: 12px;
+  }
+  .musicWidget__controls > .skip-forward > .MuiSvgIcon-root {
+    font-size: 40px !important;
+  }
+  .musicWidget__controls > .play,
+  .pause > .MuiSvgIcon-root {
+    font-size: 80px !important;
+  }
+  .musicWidget__controls > .skip-back > .MuiSvgIcon-root {
+    font-size: 40px !important;
+  }
+  .musicWidget__other {
+    position: absolute;
+    bottom: 14%;
+    right: 3%;
+  }
+  .musicWidget__Info > h3 {
+    font-size: 16px;
+    position: absolute;
+    top: -1%;
+    left: 0;
+  }
+  .musicWidget__Info > p {
+    font-size: 14px;
+    position: absolute;
+    top: 45%;
+  }
+  .musicWidget__Info {
+    width: 80%;
+    position: relative;
+  }
+  .track {
+    width: 75%;
+  }
+}

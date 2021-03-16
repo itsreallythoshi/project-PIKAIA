@@ -1,0 +1,34 @@
+.quotes {
+  width: 90%;
+  height: 38%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  color: var(--font-white);
+}
+
+.quotes__left {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: left;
+  width: 73%;
+  height: 60%;
+}
+
+.quotes__right {
+  width: 27%;
+}
+
+.quotes__time > h1 {
+  font-size: 75px;
+}
+
+.quotes__greeting > h1 {
+  font-size: 30px;
+}
+
+.quotes__words > p {
+  margin-top: 0.4rem;
+  font-size: 14px;
+}

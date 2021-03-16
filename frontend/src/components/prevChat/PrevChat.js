@@ -1,8 +1,15 @@
 import React from "react";
-import "./prevChat.css";
+import ChatBot from "./Componants/ChatBot";
+import Quotes from "./Componants/Quotes";
+import "./Styles/prevChat.css";
 
 const PrevChat = () => {
-  return <div className="dashboard__chat">Prev Chat</div>;
+  return (
+    <div className="dashboard__chat">
+      <Quotes />
+      <ChatBot />
+    </div>
+  );
 };
 
 export default PrevChat;

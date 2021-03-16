@@ -87,7 +87,7 @@ class Dashboard extends React.Component {
               onChangeIndex={this.handleChangeIndex}
               enableMouseEvents
             >
-              <div style={Object.assign({})}></div>
+              <div style={Object.assign({})}><Home/></div>
               <div style={Object.assign({})}></div>
               <div style={Object.assign({})}>
                 <PrevMusic />

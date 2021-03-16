@@ -18,7 +18,7 @@ const Home = () => {
         <PrevChat className="dashboard-home__chat" />
       </div>
       <div className="dashboard-home__right">
-        <PrevMusic className="dashboard-home__music" />
+        {/* <PrevMusic className="dashboard-home__music" /> */}
       </div>
     </main>
   );

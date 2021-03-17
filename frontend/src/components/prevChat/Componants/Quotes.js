@@ -10,7 +10,7 @@ class Quotes extends Component {
 
   callTime() {
     setInterval(() => {
-      this.setState({ today: new Date(), hour: new Date() });
+      this.setState({ today: new Date() });
     }, 1000);
   }
 
@@ -47,6 +47,8 @@ class Quotes extends Component {
             <h1>
               {hour < 12
                 ? `Good Morning, ${username}`
+                : hour > 12 && hour < 18
+                ? `Good Afternoon, ${username}`
                 : `Good Evening, ${username}.`}
             </h1>
           </div>
@@ -55,7 +57,9 @@ class Quotes extends Component {
           </div>
         </div>
         <div className="quotes__right">
-          <img src={hour < 12 ? Morning : Night} />
+          <img
+            src={hour < 12 ? Morning : hour > 12 && hour < 18 ? Noon : Night}
+          />
         </div>
       </div>
     );

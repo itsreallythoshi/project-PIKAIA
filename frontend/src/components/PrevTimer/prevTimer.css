@@ -18,12 +18,17 @@
   width: 100%;
   color: white;
   height: 50%;
-  background-color: rgba(105, 130, 194, 0.103);
   border-radius: 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
+  background-color: rgba(105, 130, 194, 0.082);
+  transition: background-color 0.2s ease-in-out;
+}
+
+.dashboard__timer:hover {
+  background-color: rgba(105, 130, 194, 0.116);
 }
 
 .dashboard__timer button {

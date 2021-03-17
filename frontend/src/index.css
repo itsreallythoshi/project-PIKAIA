@@ -6,14 +6,15 @@
   font-weight: normal;
   src: local("Museo Sans Rounded 100"),
     url("./assets/fonts/MuseoSansRounded100.woff") format("woff");
-} 
+}
 body {
   margin: 0;
   font-family: "Museo Sans Rounded 700";
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* color: white; */
+  color: white;
+} */
 
 @import url(//db.onlinewebfonts.com/c/236987803794b916d95e7fd41ed4fee0?family=SF+Pro+Text);
 /* @import url(//db.onlinewebfonts.com/c/e2e3cc5212dd8fd2fa182f01c56eea55?family=SF+Pro+Text);
@@ -21,9 +22,10 @@ body {
 body {
   margin: 0;
   font-family: "SF Pro Text";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
-
-code {
+*/ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }

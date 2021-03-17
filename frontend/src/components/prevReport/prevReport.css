@@ -1,7 +1,8 @@
 .dashboard__chart {
   width: 100%;
   height: 43%;
-  background-color: rgba(105, 130, 194, 0.103);
+  background-color: rgba(105, 130, 194, 0.082);
+  transition: background-color 0.2s ease-in-out;
   border-radius: 20px;
   display: flex;
   flex-direction: column;
@@ -13,6 +14,9 @@
   transform: scale(1.02);
 } */
 
+.dashboard__chart:hover {
+  background-color: rgba(105, 130, 194, 0.116);
+}
 .dashboard__chartInfo {
   width: 80%;
   height: 20%;

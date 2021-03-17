@@ -1,0 +1,11 @@
+
+div.moodTracker {
+    position: relative;
+    height: 250px;
+    width: 410px;
+}
+.moodTracker_graph{
+    height: 100%;
+    width: 100%;
+}
+

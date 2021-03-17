@@ -33,7 +33,7 @@ const OuoteApi = () => {
     <div className="apiQuote">
       <div className="apiQuote__quote">
         {" "}
-        {quote}
+        {` "` + quote + `" `}
         {!quote && <QuotesSkeleton />}
       </div>
       <div className="apiQuote__author">

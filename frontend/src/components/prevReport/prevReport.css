@@ -3,7 +3,36 @@
   height: 43%;
   background-color: rgba(105, 130, 194, 0.103);
   border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  color: white;
 }
 /* .dashboard__chart:hover {
   transform: scale(1.02);
 } */
+
+.dashboard__chartInfo {
+  width: 80%;
+  height: 20%;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  text-align: left;
+}
+
+.dashboard__chartInfo > p {
+  margin: 5px 0px;
+  font-size: 12px;
+}
+
+.dashboard__chartLine {
+  width: 95%;
+  height: 40%;
+  margin-left: -10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+}

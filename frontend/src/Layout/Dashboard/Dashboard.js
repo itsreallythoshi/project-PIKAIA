@@ -8,15 +8,14 @@ import Header from "../../Layout/Header/Header";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import "./dashboard.css";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
+
 import {
   BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  useRouteMatch,
-  useParams,
+  // Switch,
+  // Route,
+  // Link,
+  // useRouteMatch,
+  // useParams,
 } from "react-router-dom";
 import PrevMusic from "../../components/prevMusic/PrevMusic";
 
@@ -87,7 +86,9 @@ class Dashboard extends React.Component {
               onChangeIndex={this.handleChangeIndex}
               enableMouseEvents
             >
-              <div style={Object.assign({})}><Home/></div>
+              <div style={Object.assign({})}>
+                <Home />
+              </div>
               <div style={Object.assign({})}></div>
               <div style={Object.assign({})}>
                 <PrevMusic />

@@ -15,16 +15,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
   /* color: white; */
 
-
-
 @import url(//db.onlinewebfonts.com/c/236987803794b916d95e7fd41ed4fee0?family=SF+Pro+Text);
 /* @import url(//db.onlinewebfonts.com/c/e2e3cc5212dd8fd2fa182f01c56eea55?family=SF+Pro+Text);
 @import url(//db.onlinewebfonts.com/c/28adc6c6fd652123c3e173389a8be17f?family=SF+Pro+Text); */
 body {
   margin: 0;
   font-family: "SF Pro Text";
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 code {

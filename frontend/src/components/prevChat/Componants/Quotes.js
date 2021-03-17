@@ -47,7 +47,7 @@ class Quotes extends Component {
             <h1>
               {hour < 12
                 ? `Good Morning, ${username}`
-                : hour > 12 && hour < 18
+                : hour >= 12 && hour < 18
                 ? `Good Afternoon, ${username}`
                 : `Good Evening, ${username}.`}
             </h1>
@@ -58,7 +58,7 @@ class Quotes extends Component {
         </div>
         <div className="quotes__right">
           <img
-            src={hour < 12 ? Morning : hour > 12 && hour < 18 ? Noon : Night}
+            src={hour < 12 ? Morning : hour >= 12 && hour < 18 ? Noon : Night}
           />
         </div>
       </div>

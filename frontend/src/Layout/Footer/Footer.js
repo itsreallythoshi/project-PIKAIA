@@ -1,5 +1,4 @@
 import React from "react";
-import Home from "./assets/Home Button.svg";
 
 import "./footer.css";
 

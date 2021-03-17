@@ -18,7 +18,7 @@
 }
 
 .text {
-  font-size: 15px;
+  font-size: 16px;
 }
 
 .value {
@@ -32,7 +32,7 @@
   font-size: 16px;
 }
 .dashboard__timer__countdown {
-  strokeWidth: 50px;
+  stroke-width: 50px;
 }
 .dashboard__timer__countdown .time {
   width: 100%;

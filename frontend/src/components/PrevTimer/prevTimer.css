@@ -1,34 +1,35 @@
-.dashboard__timer h3,
-.dashboard__timer h4{
-  color: white;
-  width: 70%;
-  display: flex;
-  flex-direction: column;
-  padding: 3px;
-}
-
-.dashboard__timer h4{
+.dashboard__text > h4 {
   font-weight: 400;
   font-size: 14px;
-  margin-bottom: 10px;
+  margin-top: 5px;
+}
+
+.dashboard__text {
+  margin-top: 15px;
+  height: 26%;
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  align-items: left;
+  justify-content: center;
 }
 
 .dashboard__timer {
   width: 100%;
+  color: white;
   height: 50%;
   background-color: rgba(105, 130, 194, 0.103);
   border-radius: 20px;
-  justify-content: center;
-  align-items: center;
   display: flex;
   flex-direction: column;
-
+  justify-content: space-around;
+  align-items: center;
 }
 
 .dashboard__timer button {
-  color:#9E8CEF;
-  font-size: 20px;
-  border:none;
+  color: #9e8cef;
+  font-size: 16px;
+  border: none;
   border-radius: 10px;
   cursor: pointer;
   padding: 5px;
@@ -40,61 +41,80 @@
   text-align: center;
 }
 .setTimer__input {
-  margin: 1.5rem;
+  margin: 1rem;
 }
+
+.setTimer__stroke {
+  margin: -20px 0px 20px 0px;
+  background-color: #9e8cef;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  stroke-width: 4px;
+}
+
 .setTimer__input input {
   width: 80px;
   padding: 2rem 1.5rem;
   background: radial-gradient(#ffffff, #a872ee);
-  color:#340078;
+  color: #340078;
   border-radius: 50%;
-  font-weight: 400;
   font-size: 50px;
+  font-weight: 500;
   border: none;
   text-align: center;
   outline: 0;
 }
 
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
 }
 
-.dashboard__timer__button{
+.dashboard__timer__button {
+  position: relative;
   display: flex;
-  flex-direction: row;
-  align-items: center;
+  width: 100%;
   justify-content: center;
+  align-items: center;
 }
 
-.dashboard__timer__button button{
+.dashboard__timer__button button {
   background: #fff;
-  color: #9E8CEF;
+  color: #9e8cef;
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 10px;
-  padding: 5px;
 }
 
-.setTimer__button{
-  background: #fff;
-  color: #9E8CEF;
-  font-size: 20px;
-  font-weight: 600;
+.setTimer__button {
+  background: white !important;
+  color: #9e8cef;
+  font-weight: 800;
 }
 
-.dashboard__timer button:hover,
-.dashboard__timer__button__play:hover,
-.dashboard__timer__button__pause:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 10px rgba(225, 225, 255, 0.2);
+.change__Btn {
+  z-index: 99;
+  position: absolute;
+  top: 0;
+  transition: visibility 0s, opacity 0.2s linear;
+  left: 20%;
 }
 
-.dashboard__timer button:active,
-.dashboard__timer__button__play:active,
-.dashboard__timer__button__pause:active {
-    transform: translateY(-1px);
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+.timer__container {
+  width: 100%;
+  height: 100%;
+  position: relative;
 }
 
+/* .dashboard__timer:hover > .change__Btn {
+  opacity: 1;
+} */
+
+.dashboard__timer__time {
+  margin-top: -30px;
+  margin-bottom: 5px;
+}

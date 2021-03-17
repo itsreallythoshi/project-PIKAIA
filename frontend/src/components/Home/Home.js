@@ -3,7 +3,7 @@ import React from "react";
 import PrevTimer from "./../PrevTimer/PrevTimer";
 import PrevReport from "./../prevReport/PrevReport";
 import PrevChat from "./../prevChat/PrevChat";
-import PrevMusic from "./../prevMusic/PrevMusic";
+
 
 import "./home.css";
 

@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../Styles/Quotes.css";
-import Skeleton from "@material-ui/lab/Skeleton";
-import { makeStyles } from "@material-ui/core/styles";
 import QuotesSkeleton from "./QuotesSkeleton";
 
 const OuoteApi = () => {

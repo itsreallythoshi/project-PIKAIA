@@ -10,7 +10,7 @@ function PrevMusic() {
   const [songs, setSongs] = useState(data());
   const [currentSong, setCurrentSong] = useState(songs[0]);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isLibOpen, setIsLibOpen] = useState(false);
+
   const [isPlaylistRepeat, setIsPlaylistRepeat] = useState(false);
   const [songState, setSongState] = useState({
     currentTime: 0,

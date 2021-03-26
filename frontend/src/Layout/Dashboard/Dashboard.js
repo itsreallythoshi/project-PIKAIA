@@ -5,10 +5,9 @@ import Portrait from "./assets/Avatar.jpg";
 import { Avatar, Button } from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import Header from "../../Layout/Header/Header";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import "./dashboard.css";
+import { Tabs, Tab, makeStyles } from "@material-ui/core";
 
+import "./dashboard.css";
 import {
   BrowserRouter as Router,
   // Switch,
@@ -47,7 +46,11 @@ class Dashboard extends React.Component {
               <h2>PIKAIA</h2>
             </div>
             <div className="nav__controls">
-              <Tabs value={index} fullWidth onChange={this.handleChange}>
+              <Tabs
+                value={index}
+                fullWidth
+                onChange={this.handleChange}
+              >
                 <Tab label="Home" />
                 <Tab label="Chat" />
                 <Tab label="Music" />

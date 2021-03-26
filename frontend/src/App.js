@@ -9,7 +9,7 @@ export default function App() {
   return (
     <div className="app">
       <BackgroundOne />
-      <AppContainer/>
+      <AppContainer />
     </div>
   );
 }

@@ -1,7 +1,11 @@
 import React from "react";
 
 const Member = () => {
-  return <div>Login/Sign-up</div>;
+  return <div className="login">
+    <div className="login container">
+      
+    </div>
+  </div>;
 };
 
 export default Member;

@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, make_response
 from flask_sqlalchemy import SQLAlchemy
 from scipy.spatial.distance import euclidean
-from sqlalchemy import ForeignKey
+from sqlalchemy import ForeignKey, func
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
 from emotion_analysis import preProcessEmotionModel
@@ -11,6 +11,11 @@ import jwt
 import datetime
 import requests
 import numpy as np
+
+
+# Activate venv run the following commands
+# virtualenv env
+# env\Scripts\activate
 
 # RUN REQUIREMENT.TXT FILE TO INSTALL DEPENDENCIES
 # cd to the directory where requirements.txt is located.
@@ -71,6 +76,7 @@ class Chat(db.Model):
     chatbot_sentence = db.Column(db.String(200))
     user_emotion = db.Column(db.String(10))
     user_id = db.Column(db.Integer)
+    date_time = db.Column(db.DateTime(timezone=True), default=datetime.datetime.utcnow)
 
 
 class Emotion(db.Model):
@@ -428,15 +434,21 @@ def get_all_chat_conversations(current_user):
 
     conversations = Chat.query.filter_by(user_id=current_user.id).all()
 
+    # Getting the total emotion count
+    emotionData = Chat.query.with_entities(Chat.user_emotion, func.count(Chat.user_emotion)).group_by(
+        Chat.user_emotion).all()
+
     # an array to hold all the dictionaries
     output = []
+    emotionOutput = [emotionData]
     # inserting each to-do into it's own dictionary
     for conversation in conversations:
         conversation_data = {'public_id': conversation.public_id, 'user_sentence': conversation.user_sentence,
                              'chatbot_sentence': conversation.chatbot_sentence,
-                             'user_emotion': conversation.user_emotion}
+                             'user_emotion': conversation.user_emotion, 'date_time': conversation.date_time}
         output.append(conversation_data)
-    return jsonify({'conversations': output})
+
+    return jsonify({'conversations': output, 'emotion_count': emotionOutput})
 
 
 @app.route('/chat/<user_public_id>', methods=['DELETE'])
@@ -451,7 +463,6 @@ def admin_delete_user_chat_conversations(current_user, user_public_id):
         return jsonify({'message': 'no such user'})
 
     userId = user.id
-
     deleted = 0
     while True:
         conversation = Chat.query.filter_by(user_id=userId).first()
@@ -527,7 +538,7 @@ def user_get_emotion(current_user):
 
     user_emotion = (class_names[np.argmax(preProcessEmotionModel(encodedRequest))])
 
-    # Saving data
+    # saving data
     new_emotion = Emotion(public_id=str(uuid.uuid4()), user_input=client_request['userInput'],
                           user_emotion=user_emotion, user_id=current_user.id)
     db.session.add(new_emotion)

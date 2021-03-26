@@ -30,6 +30,11 @@
 .nav__controls {
   width: 30rem;
 }
+
+.nav__controls .MuiTabs-indicator {
+  display: none;
+}
+
 .nav__controls > ul {
   justify-content: space-around;
   display: flex;

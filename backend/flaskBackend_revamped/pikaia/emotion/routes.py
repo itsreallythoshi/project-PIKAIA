@@ -7,6 +7,10 @@ from flask import request, jsonify
 import uuid
 import numpy as np
 
+# class Name on Emotions
+class_names = ['joy', 'fear', 'anger', 'sadness', 'neutral']
+
+
 @app.route('/emotions', methods=['GET'])
 @token_required
 def get_all_chat_emotions(current_user):
@@ -71,4 +75,3 @@ def user_delete_all_emotions(current_user):
 
     db.session.commit()
     return jsonify({'message': 'all emotions were successfully deleted'})
-

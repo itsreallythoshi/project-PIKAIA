@@ -8,6 +8,8 @@ import uuid
 import requests
 import numpy as np
 
+# class Name on Emotions
+class_names = ['joy', 'fear', 'anger', 'sadness', 'neutral']
 
 # TODO: add validation and error handling code
 # json request body structure

@@ -12,7 +12,7 @@ from keras.preprocessing.sequence import pad_sequences
 # Loading the emotion model
 def getEmotionModel():
     global loaded_model_v2
-    loaded_model_v2 = load_model('/pikaia/models/ml_models/bi_gru_w2vec_v2_30eps.h5')
+    loaded_model_v2 = load_model('./pikaia/models/ml_models/bi_gru_w2vec_v2_30eps.h5')
     print("Loaded Model")
 
 
@@ -20,8 +20,8 @@ def getEmotionModel():
 def readEmotionDataSets():
     global data_train
     global data_test
-    data_train = pd.read_csv('/pikaia/models/data/data_train.csv', encoding='utf-8')
-    data_test = pd.read_csv('/pikaia/models/data/data_test.csv', encoding='utf-8')
+    data_train = pd.read_csv('./pikaia/models/data/data_train.csv', encoding='utf-8')
+    data_test = pd.read_csv('./pikaia/models/data/data_test.csv', encoding='utf-8')
     print("Reading Emotion datasets")
 
 

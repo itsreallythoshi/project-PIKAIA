@@ -9,6 +9,12 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///pikaia.db'
 app.config['SECRET_KEY'] = 'ec9439cfc6c796ae2029594d'
 db = SQLAlchemy(app)
 
+
+@app.route('/')
+def hello_world():
+    return 'Deployment Success Check!'
+
+
 from pikaia.admin import routes
 from pikaia.chatbot import routes
 from pikaia.music_recommender import routes

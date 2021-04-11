@@ -7,14 +7,16 @@ import register from "./img/register.svg";
 import "./Access.css";
 
 function Access() {
-  const [click, setClick] = useState(false);
-  function clickOnBlock(e) {
-    console.log(e.target.getAttribute("class"));
-  }
+  
+  const [isActive, setActive] = useState("false");
+
+  const handleToggle = () => {
+    setActive(!isActive);
+  };
   
   return (
     <div className="access">
-      <div className="access__container">
+      <div className="access__container"  >
         <div className="access__forms--container">
           <div className="access__signin--signup">
             <form action="#" className="access__signin--form">
@@ -95,16 +97,7 @@ function Access() {
                 Debitis, ex ratione. Aliquid!
               </p>
               <button
-                onClick={(e) => {
-                  setClick(true);
-                  console.log(click);
-                  clickOnBlock(e);
-                }}
-                className={
-                  click
-                    ? "access__btn transparent sign-up-mode"
-                    : "access__btn transparent"
-                }
+              className={isActive ? "access__btn transparent sign-up-mode" : "access__btn transparent"} onClick={handleToggle}
               >
                 Sign up
               </button>
@@ -119,16 +112,8 @@ function Access() {
                 laboriosam ad deleniti.
               </p>
               <button
-                onClick={(e) => {
-                  setClick(true);
-                  console.log(click);
-                  clickOnBlock(e);
-                }}
-                className={
-                  click
-                    ? "access__btn transparent sign-up-mode"
-                    : "access__btn transparent"
-                }
+              className={isActive ? "access__btn transparent sign-up-mode" : "access__btn transparent"} onClick={handleToggle}
+              
               >
                 Sign in
               </button>
